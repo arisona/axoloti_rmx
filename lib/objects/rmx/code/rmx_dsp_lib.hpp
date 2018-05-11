@@ -258,8 +258,8 @@ public:
             // update feedback 
             int feedbackL = ___SMMUL(lastOutL << 3, sendLR << 2) + ___SMMUL(lastOutR << 3, sendRL << 2);	
             int feedbackR = ___SMMUL(lastOutR << 3, sendLR << 2) + ___SMMUL(lastOutL << 3, sendRL << 2);	
-            feedbackL = ___SMMUL(feedbackL << 3, feedback << 2);
-            feedbackR = ___SMMUL(feedbackR << 3, feedback << 2);
+            feedbackL = __SSAT(___SMMUL(feedbackL << 3, feedback << 2), 28);
+            feedbackR = __SSAT(___SMMUL(feedbackR << 3, feedback << 2), 28);
             
             // apply pingpong to input
             int inL = ___SMMUL(inBufL[s] << 3, sendLR << 2) + ___SMMUL(inBufL[s] << 3, sendRL << 2);	
@@ -279,8 +279,8 @@ public:
             int outR = ___SMMUL(bufferR[indexInR] << 3, fadeInLevel << 2) + ___SMMUL(bufferR[indexOutR] << 3, fadeOutLevel << 2);
 
             // filter output
-            outL = lpL.filterLow(hpL.filterHigh(outL));
-            outR = lpR.filterLow(hpR.filterHigh(outR));
+            outL = __SSAT(lpL.filterLow(__SSAT(hpL.filterHigh(outL), 28)), 28);
+            outR = __SSAT(lpR.filterLow(__SSAT(hpR.filterHigh(outR), 28)), 28);
 
             // write output
             outBufL[s] = lastOutL = __SSAT(outL, 28);
