@@ -1,0 +1,491 @@
+<patch-1.0 appVersion="1.0.12">
+   <obj type="audio/in stereo" uuid="99848ad6d90a8e615e83b2e619cfc806f28e7281" name="input" x="14" y="14">
+      <params/>
+      <attribs/>
+   </obj>
+   <obj type="rmx/mix3_stereo" uuid="ae3629df-aeea-483f-b280-665200c6a909" name="mix3_stereo_1" x="994" y="14">
+      <params/>
+      <attribs/>
+   </obj>
+   <obj type="audio/out stereo" uuid="a1ca7a567f535acc21055669829101d3ee7f0189" name="output" x="1134" y="14">
+      <params/>
+      <attribs/>
+   </obj>
+   <obj type="sss/delay/shimmerDelaySt" uuid="ab1d306c-c06f-48c0-8003-078fa9555718" name="shimmerDelaySt_1" x="378" y="28">
+      <params>
+         <frac32.s.map name="rate" value="25.0"/>
+         <frac32.u.map name="feed" value="64.0"/>
+         <frac32.u.map name="slope" value="46.0"/>
+         <frac32.u.map name="depth" value="55.0"/>
+         <frac32.u.map name="spread" value="56.0"/>
+         <frac32.s.map name="damp" value="20.0"/>
+         <frac32.s.map name="panRate" value="37.0"/>
+         <int32 name="panSpread" value="2"/>
+         <frac32.u.map name="wet" value="64.0"/>
+      </params>
+      <attribs>
+         <combo attributeName="size" selection="65536 (1.36s)"/>
+         <spinner attributeName="stages" value="2"/>
+      </attribs>
+   </obj>
+   <obj type="fx/lmnts/reverb" uuid="8027561C-A0B5-4DF8-A10E-3ED1274F2980" name="reverb_1" x="784" y="56">
+      <params>
+         <frac32.u.map name="amount" value="64.0"/>
+         <frac32.u.map name="time" value="0.0"/>
+         <frac32.u.map name="diffusion" value="0.0"/>
+         <frac32.u.map name="gain" value="32.0"/>
+         <frac32.u.map name="lowpass" value="64.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <patcher type="patch/patcher" uuid="5d6089ee-1e25-4e98-b12d-562e915f9a3d" name="filters" x="210" y="112">
+      <params/>
+      <attribs/>
+      <subpatch appVersion="1.0.12">
+         <obj type="patch/inlet a" uuid="b577fe41e0a6bc7b5502ce33cb8a3129e2e28ee5" name="in_l" x="28" y="14">
+            <params/>
+            <attribs/>
+         </obj>
+         <obj type="patch/outlet a" uuid="abd8c5fd3b0524a6630f65cad6dc27f6c58e2a3e" name="out left" x="532" y="14">
+            <params/>
+            <attribs/>
+         </obj>
+         <obj type="filter/hp m" uuid="fdba806c3cfd2b7aca3256c733379a06e5811e66" name="hp_1" x="154" y="56">
+            <params>
+               <frac32.s.map name="pitch" value="0.0"/>
+               <frac32.u.map name="reso" value="0.0"/>
+            </params>
+            <attribs/>
+         </obj>
+         <obj type="filter/lp m" uuid="1aa1bc51da479ed92429af700591f9d7b9f45f22" name="lp left" x="392" y="56">
+            <params>
+               <frac32.s.map name="pitch" value="0.0"/>
+               <frac32.u.map name="reso" value="0.0"/>
+            </params>
+            <attribs/>
+         </obj>
+         <obj type="patch/inlet a" uuid="b577fe41e0a6bc7b5502ce33cb8a3129e2e28ee5" name="in_r" x="28" y="70">
+            <params/>
+            <attribs/>
+         </obj>
+         <obj type="patch/outlet a" uuid="abd8c5fd3b0524a6630f65cad6dc27f6c58e2a3e" name="out right" x="532" y="70">
+            <params/>
+            <attribs/>
+         </obj>
+         <obj type="patch/inlet f" uuid="5c585d2dcd9c05631e345ac09626a22a639d7c13" name="hp freq" x="28" y="126">
+            <params/>
+            <attribs/>
+         </obj>
+         <obj type="patch/inlet f" uuid="5c585d2dcd9c05631e345ac09626a22a639d7c13" name="hp reso" x="28" y="182">
+            <params/>
+            <attribs/>
+         </obj>
+         <obj type="patch/inlet f" uuid="5c585d2dcd9c05631e345ac09626a22a639d7c13" name="lp freq" x="28" y="238">
+            <params/>
+            <attribs/>
+         </obj>
+         <obj type="filter/hp m" uuid="fdba806c3cfd2b7aca3256c733379a06e5811e66" name="hp_2" x="154" y="252">
+            <params>
+               <frac32.s.map name="pitch" value="0.0"/>
+               <frac32.u.map name="reso" value="0.0"/>
+            </params>
+            <attribs/>
+         </obj>
+         <obj type="filter/lp m" uuid="1aa1bc51da479ed92429af700591f9d7b9f45f22" name="lp right" x="392" y="252">
+            <params>
+               <frac32.s.map name="pitch" value="0.0"/>
+               <frac32.u.map name="reso" value="0.0"/>
+            </params>
+            <attribs/>
+         </obj>
+         <obj type="filter/lp svf" uuid="2003da6360b4fdb967cd635e9f6544e832fd522e" name="lp_1" x="630" y="252">
+            <params>
+               <frac32.s.map name="pitch" value="0.0"/>
+               <frac32.u.map name="reso" value="0.0"/>
+            </params>
+            <attribs/>
+         </obj>
+         <obj type="patch/inlet f" uuid="5c585d2dcd9c05631e345ac09626a22a639d7c13" name="lp reso" x="28" y="294">
+            <params/>
+            <attribs/>
+         </obj>
+         <nets>
+            <net>
+               <source obj="hp_2" outlet="out"/>
+               <dest obj="lp right" inlet="in"/>
+            </net>
+            <net>
+               <source obj="hp_1" outlet="out"/>
+               <dest obj="lp left" inlet="in"/>
+            </net>
+            <net>
+               <source obj="lp left" outlet="out"/>
+               <dest obj="out left" inlet="outlet"/>
+            </net>
+            <net>
+               <source obj="in_r" outlet="inlet"/>
+               <dest obj="hp_2" inlet="in"/>
+            </net>
+            <net>
+               <source obj="lp right" outlet="out"/>
+               <dest obj="out right" inlet="outlet"/>
+            </net>
+            <net>
+               <source obj="hp freq" outlet="inlet"/>
+               <dest obj="hp_1" inlet="pitch"/>
+               <dest obj="hp_2" inlet="pitch"/>
+            </net>
+            <net>
+               <source obj="hp reso" outlet="inlet"/>
+               <dest obj="hp_1" inlet="reso"/>
+               <dest obj="hp_2" inlet="reso"/>
+            </net>
+            <net>
+               <source obj="lp freq" outlet="inlet"/>
+               <dest obj="lp left" inlet="pitch"/>
+               <dest obj="lp right" inlet="pitch"/>
+            </net>
+            <net>
+               <source obj="lp reso" outlet="inlet"/>
+               <dest obj="lp left" inlet="reso"/>
+               <dest obj="lp right" inlet="reso"/>
+            </net>
+            <net>
+               <source obj="in_l" outlet="inlet"/>
+               <dest obj="hp_1" inlet="in"/>
+            </net>
+         </nets>
+         <settings>
+            <subpatchmode>no</subpatchmode>
+         </settings>
+         <notes><![CDATA[]]></notes>
+         <windowPos>
+            <x>383</x>
+            <y>192</y>
+            <width>989</width>
+            <height>659</height>
+         </windowPos>
+      </subpatch>
+   </patcher>
+   <obj type="audio/inconfig" uuid="9a80ef3c19f2a8f81da3a3b7c1c44d18126b97d9" name="input config" x="14" y="140">
+      <params/>
+      <attribs>
+         <combo attributeName="gain" selection="0dB"/>
+         <combo attributeName="boost" selection="0dB"/>
+         <combo attributeName="mode" selection="Stereo"/>
+      </attribs>
+   </obj>
+   <obj type="rmx/bus1_stereo" uuid="ec8299af-06c7-49f4-bf9e-191ea145dab0" name="delay send mix" x="574" y="196">
+      <params/>
+      <attribs/>
+   </obj>
+   <obj type="jaffa/disp/Vu2" uuid="cce77389-d514-4abf-b550-d63c31dc3cd8" name="Vu2_1" x="1162" y="196">
+      <params/>
+      <attribs/>
+   </obj>
+   <obj type="audio/outconfig" uuid="eace67e3304afaa1bb695b444e9345f2d8adaf00" name="output config" x="14" y="224">
+      <params/>
+      <attribs>
+         <combo attributeName="headphones" selection="-36dB"/>
+         <combo attributeName="mode" selection="Stereo"/>
+      </attribs>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="l time" x="14" y="448">
+      <params>
+         <frac32.u.map name="value" value="64.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="l feed" x="126" y="448">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="l cross" x="238" y="448">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="r time" x="350" y="448">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="r feed" x="462" y="448">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="r cross" x="574" y="448">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="mod freq" x="686" y="448">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="mod depth" x="798" y="448">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="time" x="14" y="546">
+      <params>
+         <frac32.u.map name="value" value="55.5"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="diffusion" x="126" y="546">
+      <params>
+         <frac32.u.map name="value" value="45.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="unused_2_2" x="238" y="546">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="unused_2_3" x="350" y="546">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="unused_2_4" x="462" y="546">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="unused_2_5" x="574" y="546">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="unused_2_6" x="686" y="546">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="unused_2_7" x="798" y="546">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="hp reso" x="14" y="644">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="lp reso" x="126" y="644">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="unused_3_2" x="238" y="644">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="unused_3_3" x="350" y="644">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="unused_3_4" x="462" y="644">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="unused_3_5" x="574" y="644">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="unused_3_6" x="686" y="644">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="unused_3_7" x="798" y="644">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="drj/ctrl/dial_pitch" uuid="86ae7d7f49093cb1c94aed72274d118a23d46692" name="hp freq" x="14" y="742">
+      <params>
+         <frac32.s.map name="pitch" value="32.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="drj/ctrl/dial_pitch" uuid="86ae7d7f49093cb1c94aed72274d118a23d46692" name="lp freq" x="126" y="742">
+      <params>
+         <frac32.s.map name="pitch" value="64.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="delay send" x="462" y="742">
+      <params>
+         <frac32.u.map name="value" value="64.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="delay mix" x="574" y="742">
+      <params>
+         <frac32.u.map name="value" value="64.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="reverb mix" x="686" y="742">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="thru mix" x="798" y="742">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="master mix" x="910" y="742">
+      <params>
+         <frac32.u.map name="value" value="64.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <nets>
+      <net>
+         <source obj="input" outlet="right"/>
+         <dest obj="filters" inlet="in_r"/>
+         <dest obj="mix3_stereo_1" inlet="in0_r"/>
+      </net>
+      <net>
+         <source obj="shimmerDelaySt_1" outlet="outL"/>
+         <dest obj="delay send mix" inlet="in0_l"/>
+         <dest obj="mix3_stereo_1" inlet="in1_l"/>
+      </net>
+      <net>
+         <source obj="shimmerDelaySt_1" outlet="outR"/>
+         <dest obj="delay send mix" inlet="in0_r"/>
+         <dest obj="mix3_stereo_1" inlet="in1_r"/>
+      </net>
+      <net>
+         <source obj="mix3_stereo_1" outlet="out_l"/>
+         <dest obj="output" inlet="left"/>
+         <dest obj="Vu2_1" inlet="2"/>
+      </net>
+      <net>
+         <source obj="mix3_stereo_1" outlet="out_r"/>
+         <dest obj="output" inlet="right"/>
+      </net>
+      <net>
+         <source obj="input" outlet="left"/>
+         <dest obj="filters" inlet="in_l"/>
+         <dest obj="mix3_stereo_1" inlet="in0_l"/>
+         <dest obj="Vu2_1" inlet="1"/>
+      </net>
+      <net>
+         <source obj="filters" outlet="out left"/>
+         <dest obj="delay send mix" inlet="bus_in_l"/>
+         <dest obj="shimmerDelaySt_1" inlet="inL"/>
+      </net>
+      <net>
+         <source obj="filters" outlet="out right"/>
+         <dest obj="delay send mix" inlet="bus_in_r"/>
+         <dest obj="shimmerDelaySt_1" inlet="inR"/>
+      </net>
+      <net>
+         <source obj="hp reso" outlet="out"/>
+         <dest obj="filters" inlet="hp reso"/>
+      </net>
+      <net>
+         <source obj="hp freq" outlet="out"/>
+         <dest obj="filters" inlet="hp freq"/>
+      </net>
+      <net>
+         <source obj="lp reso" outlet="out"/>
+         <dest obj="filters" inlet="lp reso"/>
+      </net>
+      <net>
+         <source obj="lp freq" outlet="out"/>
+         <dest obj="filters" inlet="lp freq"/>
+      </net>
+      <net>
+         <source obj="master mix" outlet="out"/>
+         <dest obj="mix3_stereo_1" inlet="master"/>
+      </net>
+      <net>
+         <source obj="thru mix" outlet="out"/>
+         <dest obj="mix3_stereo_1" inlet="mix0"/>
+      </net>
+      <net>
+         <source obj="reverb mix" outlet="out"/>
+         <dest obj="mix3_stereo_1" inlet="mix2"/>
+      </net>
+      <net>
+         <source obj="delay mix" outlet="out"/>
+         <dest obj="mix3_stereo_1" inlet="mix1"/>
+      </net>
+      <net>
+         <source obj="delay send" outlet="out"/>
+         <dest obj="delay send mix" inlet="mix0"/>
+      </net>
+      <net>
+         <source obj="delay send mix" outlet="bus_out_l"/>
+         <dest obj="reverb_1" inlet="l"/>
+      </net>
+      <net>
+         <source obj="delay send mix" outlet="bus_out_r"/>
+         <dest obj="reverb_1" inlet="r"/>
+      </net>
+      <net>
+         <source obj="reverb_1" outlet="l"/>
+         <dest obj="mix3_stereo_1" inlet="in2_l"/>
+      </net>
+      <net>
+         <source obj="reverb_1" outlet="r"/>
+         <dest obj="mix3_stereo_1" inlet="in2_r"/>
+      </net>
+      <net>
+         <source obj="time" outlet="out"/>
+         <dest obj="reverb_1" inlet="time"/>
+      </net>
+      <net>
+         <source obj="diffusion" outlet="out"/>
+         <dest obj="reverb_1" inlet="diffusion"/>
+      </net>
+   </nets>
+   <settings>
+      <subpatchmode>no</subpatchmode>
+   </settings>
+   <notes><![CDATA[]]></notes>
+   <windowPos>
+      <x>44</x>
+      <y>22</y>
+      <width>1342</width>
+      <height>878</height>
+   </windowPos>
+</patch-1.0>

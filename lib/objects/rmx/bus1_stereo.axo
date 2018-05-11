@@ -1,0 +1,31 @@
+<objdefs appVersion="1.0.12">
+   <obj.normal id="bus1_stereo" uuid="ec8299af-06c7-49f4-bf9e-191ea145dab0">
+      <sDescription>1 input s-rate stereo bus mixer</sDescription>
+      <author>robot_mixeur</author>
+      <license>BSD</license>
+      <inlets>
+         <frac32buffer name="bus_in_l" description="bus left"/>
+         <frac32buffer name="bus_in_r" description="bus right"/>
+         <frac32buffer name="in0_l" description="input 0 left"/>
+         <frac32buffer name="in0_r" description="input 0 right"/>
+         <frac32 name="mix0" description="input 0 mix"/>
+      </inlets>
+      <outlets>
+         <frac32buffer name="bus_out_l" description="bus out left"/>
+         <frac32buffer name="bus_out_r" description="bus out right"/>
+      </outlets>
+      <displays/>
+      <params/>
+      <attribs/>
+      <includes>
+         <include>./code/rmx_dsp_lib.hpp</include>
+      </includes>
+      <code.srate><![CDATA[int32_t accum;
+
+accum = ___SMMUL(inlet_mix0 << 3, __SSAT(inlet_in0__l, 28) << 2);
+outlet_bus__out__l = __SSAT(inlet_bus__in__l + accum, 28);
+
+accum = ___SMMUL(inlet_mix0 << 3, __SSAT(inlet_in0__r, 28) << 2);
+outlet_bus__out__r = __SSAT(inlet_bus__in__r + accum, 28);]]></code.srate>
+   </obj.normal>
+</objdefs>

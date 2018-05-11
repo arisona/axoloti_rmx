@@ -1,0 +1,42 @@
+<objdefs appVersion="1.0.12">
+   <obj.normal id="mix3_stereo" uuid="ae3629df-aeea-483f-b280-665200c6a909">
+      <sDescription>3 input s-rate stereo mixer with main gain</sDescription>
+      <author>robot_mixeur</author>
+      <license>BSD</license>
+      <inlets>
+         <frac32buffer name="l0" description="Left input 0"/>
+         <frac32buffer name="r0" description="Right input 0"/>
+         <frac32buffer name="l1" description="Left input 1"/>
+         <frac32buffer name="r1" description="Right input 1"/>
+         <frac32buffer name="l2" description="Left input 2"/>
+         <frac32buffer name="r2" description="Right input 2"/>
+         <frac32 name="mix0" description="Mix 0"/>
+         <frac32 name="mix1" description="Mix 1"/>
+         <frac32 name="mix2" description="Mix 2"/>
+         <frac32 name="master" description="Master mix"/>
+      </inlets>
+      <outlets>
+         <frac32buffer name="l" description="Left output"/>
+         <frac32buffer name="r" description="Right output"/>
+      </outlets>
+      <displays/>
+      <params/>
+      <attribs/>
+      <includes>
+         <include>./code/rmx_dsp_lib.hpp</include>
+      </includes>
+      <code.srate><![CDATA[int32_t accum;
+
+accum = ___SMMUL(inlet_mix0 << 3, __SSAT(inlet_l0, 28) << 2);
+accum = ___SMMLA(inlet_mix1 << 3, __SSAT(inlet_l1, 28) << 2, accum);
+accum = ___SMMLA(inlet_mix2 << 3, __SSAT(inlet_l2, 28) << 2, accum);
+accum = ___SMMUL(inlet_master << 3, __SSAT(accum, 28) << 2);
+outlet_l = __SSAT(accum, 28);
+
+accum = ___SMMUL(inlet_mix0 << 3, __SSAT(inlet_r0, 28) << 2);
+accum = ___SMMLA(inlet_mix1 << 3, __SSAT(inlet_r1, 28) << 2, accum);
+accum = ___SMMLA(inlet_mix2 << 3, __SSAT(inlet_r2, 28) << 2, accum);
+accum = ___SMMUL(inlet_master << 3, __SSAT(accum, 28) << 2);
+outlet_r = __SSAT(accum, 28);]]></code.srate>
+   </obj.normal>
+</objdefs>

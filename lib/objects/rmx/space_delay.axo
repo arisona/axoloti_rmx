@@ -1,0 +1,85 @@
+<objdefs appVersion="1.0.12">
+   <obj.normal id="space_delay" uuid="02c0fd21-6052-4d71-8c52-8e79e42326bd">
+      <sDescription>space delay</sDescription>
+      <author>robot_mixeur</author>
+      <license>BSD</license>
+      <inlets>
+         <frac32buffer name="l" description="Left input"/>
+         <frac32buffer name="r" description="Right input"/>
+         <frac32 name="time" description="Delay time"/>
+         <frac32 name="offset" description="Delay time offset for right channel"/>
+         <frac32 name="timeMod" description="Delay time modulation amount"/>
+         <frac32 name="feedback" description="Feedback"/>
+         <frac32 name="pingpong" description="Pingpong amount"/>
+         <frac32 name="lpCutoff" description="LP cutoff frequency"/>
+         <frac32 name="lpMod" description="LP cutoff modulation amount"/>
+         <frac32 name="lpReso" description="LP resonance"/>
+         <frac32 name="hpCutoff" description="HP cutoff frequency"/>
+         <frac32 name="hpMod" description="HP cutoff modulation amount"/>
+         <frac32 name="hpReso" description="HP resonance"/>
+         <frac32 name="modRate" description="Modulation rate"/>
+         <frac32 name="modMix" description="Modulation oscillator vs envelope mix"/>
+      </inlets>
+      <outlets>
+         <frac32buffer name="l" description="Left output"/>
+         <frac32buffer name="r" description="Right output"/>
+         <frac32 name="debug"/>
+      </outlets>
+      <displays/>
+      <params/>
+      <attribs>
+         <combo name="length" description="Delay length">
+            <MenuEntries>
+               <string>256 (5.33ms)</string>
+               <string>512 (10.66ms)</string>
+               <string>1024 (21.33ms)</string>
+               <string>2048 (42.66ms)</string>
+               <string>4096 (85.33ms)</string>
+               <string>8192 (170ms)</string>
+               <string>16384 (341ms)</string>
+               <string>32768 (682ms)</string>
+               <string>65536 (1.36s)</string>
+               <string>131072 (2.73s)</string>
+               <string>262144 (5.46s)</string>
+               <string>524288 (10.9s)</string>
+               <string>1048576 (21.8s)</string>
+               <string>2097152 (43.7s)</string>
+            </MenuEntries>
+            <CEntries>
+               <string>8</string>
+               <string>9</string>
+               <string>10</string>
+               <string>11</string>
+               <string>12</string>
+               <string>13</string>
+               <string>14</string>
+               <string>15</string>
+               <string>16</string>
+               <string>17</string>
+               <string>18</string>
+               <string>19</string>
+               <string>20</string>
+               <string>21</string>
+            </CEntries>
+         </combo>
+         <spinner name="fadetime" description="Fade speed (higher means slower)" MinValue="1" MaxValue="20" DefaultValue="13"/>
+      </attribs>
+      <includes>
+         <include>./code/rmx_dsp_lib.hpp</include>
+      </includes>
+      <code.declaration><![CDATA[rmx::FadeDelay delay { attr_length, attr_fadetime };]]></code.declaration>
+      <code.init><![CDATA[static int32_t _arrayL[1 << attr_length] __attribute__ ((section (".sdram")));
+static int32_t _arrayR[1 << attr_length] __attribute__ ((section (".sdram")));
+
+delay.setup(&_arrayL[0], &_arrayR[0]);]]></code.init>
+      <code.krate><![CDATA[delay.update(inlet_l, inlet_r,
+		   inlet_time, inlet_offset, inlet_timeMod,
+		   inlet_feedback, inlet_pingpong,
+		   inlet_hpCutoff, inlet_hpReso, inlet_hpMod,
+		   inlet_lpCutoff, inlet_lpReso, inlet_lpMod,
+		   inlet_modRate, inlet_modMix);
+delay.process(inlet_l, inlet_r, outlet_l, outlet_r);
+
+outlet_debug = delay.debug;]]></code.krate>
+   </obj.normal>
+</objdefs>

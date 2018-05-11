@@ -1,0 +1,26 @@
+<objdefs appVersion="1.0.12">
+   <obj.normal id="env_follower" uuid="f83be1e0-df96-4180-a110-edda7ef47383">
+      <sDescription>Stereo envelope follower with attach and release time.
+
+Times are mapped expontentially from 0 to ~8s, with a value of 32 corresponding to ~100ms.</sDescription>
+      <author>robot_mixeur</author>
+      <license>BSD</license>
+      <inlets>
+         <frac32buffer name="l" description="Left input"/>
+         <frac32buffer name="r" description="Right input"/>
+         <frac32 name="attack" description="Attack time"/>
+         <frac32 name="release" description="Release time"/>
+      </inlets>
+      <outlets>
+         <frac32 name="env" description="Envelope"/>
+      </outlets>
+      <displays/>
+      <params/>
+      <attribs/>
+      <includes>
+         <include>./code/rmx_dsp_lib.hpp</include>
+      </includes>
+      <code.declaration><![CDATA[rmx::EnvelopeFollower follower;]]></code.declaration>
+      <code.krate><![CDATA[outlet_env = follower.process(inlet_attack, inlet_release, inlet_l, inlet_r);]]></code.krate>
+   </obj.normal>
+</objdefs>
