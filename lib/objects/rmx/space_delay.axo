@@ -18,7 +18,7 @@
          <frac32 name="hpMod" description="HP cutoff modulation amount"/>
          <frac32 name="hpReso" description="HP resonance"/>
          <frac32 name="modRate" description="Modulation rate"/>
-         <frac32 name="modMix" description="Modulation oscillator vs envelope mix"/>
+         <frac32 name="modEnv" description="Envelope modulation mix"/>
       </inlets>
       <outlets>
          <frac32buffer name="l" description="Left output"/>
@@ -44,7 +44,7 @@ delay.setup(&_arrayL[0], &_arrayR[0]);]]></code.init>
 		   inlet_feedback, inlet_pingpong,
 		   inlet_hpCutoff, inlet_hpReso, inlet_hpMod,
 		   inlet_lpCutoff, inlet_lpReso, inlet_lpMod,
-		   inlet_modRate, inlet_modMix);
+		   inlet_modRate, inlet_modEnv);
 delay.process(inlet_l, inlet_r, outlet_l, outlet_r);
 
 outlet_debug = delay.debug;]]></code.krate>

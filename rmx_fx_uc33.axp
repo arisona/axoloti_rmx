@@ -26,6 +26,10 @@
       <params/>
       <attribs/>
    </obj>
+   <obj type="rmx/env_follower" uuid="f83be1e0-df96-4180-a110-edda7ef47383" name="env_follower_1" x="224" y="112">
+      <params/>
+      <attribs/>
+   </obj>
    <obj type="math/inv" uuid="565521d3699b36d8095aa1c79b9ad0046fb133ce" name="inv_1" x="602" y="112">
       <params/>
       <attribs/>
@@ -37,10 +41,6 @@
          <combo attributeName="boost" selection="0dB"/>
          <combo attributeName="mode" selection="Stereo"/>
       </attribs>
-   </obj>
-   <obj type="rmx/env_follower" uuid="f83be1e0-df96-4180-a110-edda7ef47383" name="env_follower_1" x="252" y="140">
-      <params/>
-      <attribs/>
    </obj>
    <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="master gain" x="854" y="140">
       <params>
@@ -59,7 +59,7 @@
       <params/>
       <attribs/>
    </obj>
-   <obj type="disp/i" uuid="5e35fd0c62d81e70017289250cf28edd26e19e4a" name="i_1" x="840" y="322">
+   <obj type="disp/i" uuid="5e35fd0c62d81e70017289250cf28edd26e19e4a" name="i_1" x="840" y="294">
       <params/>
       <attribs/>
    </obj>
@@ -87,7 +87,7 @@
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d mod mix" x="462" y="392">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d mod env" x="462" y="392">
       <params>
          <frac32.u.map name="value" MidiCC="57" value="0.0"/>
       </params>
@@ -173,7 +173,7 @@
    </obj>
    <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d offset" x="238" y="588">
       <params>
-         <frac32.u.map name="value" MidiCC="25" value="64.0"/>
+         <frac32.u.map name="value" MidiCC="25" value="0.0"/>
       </params>
       <attribs/>
    </obj>
@@ -229,7 +229,7 @@
    </obj>
    <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d time" x="238" y="686">
       <params>
-         <frac32.u.map name="value" MidiCC="10" value="33.5"/>
+         <frac32.u.map name="value" MidiCC="10" value="0.0"/>
       </params>
       <attribs/>
    </obj>
@@ -259,13 +259,13 @@
    </obj>
    <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="wet mix" x="798" y="686">
       <params>
-         <frac32.u.map name="value" MidiCC="16" value="32.0"/>
+         <frac32.u.map name="value" MidiCC="16" value="64.0"/>
       </params>
       <attribs/>
    </obj>
    <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="dry mix" x="910" y="686">
       <params>
-         <frac32.u.map name="value" MidiCC="7" value="32.0"/>
+         <frac32.u.map name="value" MidiCC="7" value="0.0"/>
       </params>
       <attribs/>
    </obj>
@@ -273,8 +273,8 @@
       <net>
          <source obj="input" outlet="right"/>
          <dest obj="input_gain" inlet="r"/>
-         <dest obj="final_mix" inlet="r0"/>
          <dest obj="vu right" inlet="1"/>
+         <dest obj="final_mix" inlet="r0"/>
       </net>
       <net>
          <source obj="input" outlet="left"/>
@@ -331,8 +331,8 @@
          <dest obj="space_delay_1" inlet="lpReso"/>
       </net>
       <net>
-         <source obj="d mod mix" outlet="out"/>
-         <dest obj="space_delay_1" inlet="modMix"/>
+         <source obj="d mod env" outlet="out"/>
+         <dest obj="space_delay_1" inlet="modEnv"/>
       </net>
       <net>
          <source obj="d mod rate" outlet="out"/>
@@ -341,10 +341,6 @@
       <net>
          <source obj="input gain" outlet="out"/>
          <dest obj="input_gain" inlet="gain"/>
-      </net>
-      <net>
-         <source obj="inv_1" outlet="out"/>
-         <dest obj="space_delay_1" inlet="lpCutoff"/>
       </net>
       <net>
          <source obj="d lp cutoff" outlet="out"/>
@@ -409,13 +405,17 @@
          <dest obj="kscope_1" inlet="in"/>
          <dest obj="i_1" inlet="in"/>
       </net>
+      <net>
+         <source obj="inv_1" outlet="out"/>
+         <dest obj="space_delay_1" inlet="lpCutoff"/>
+      </net>
    </nets>
    <settings>
       <subpatchmode>no</subpatchmode>
    </settings>
    <notes><![CDATA[]]></notes>
    <windowPos>
-      <x>52</x>
+      <x>161</x>
       <y>22</y>
       <width>1241</width>
       <height>878</height>
