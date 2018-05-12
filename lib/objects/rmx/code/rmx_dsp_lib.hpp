@@ -360,18 +360,9 @@ public:
         }
     }
 
-    void update(const int32buffer inBufL, const int32buffer inBufR,
-                const int time, const int offset, const int timeMod,
-                const int feedback, const int pingpong,
-                const int hpCutoff, const int hpReso, const int hpMod,
-                const int lpCutoff, const int lpReso, const int lpMod,
-                const int modRate, const int modEnv) {
-
-
-    }
-
     int debug = 0;
     void process(const int32buffer inBufL, const int32buffer inBufR,
+                 const int inEnv,
                  int32buffer outBufL, int32buffer outBufR,
                  const int time, const int offset, const int timeMod,
                  const int feedback, const int pingpong,
@@ -409,10 +400,9 @@ public:
         }
 
         // update env modulation (combine with lfo modulation)
-        int env = envelope.process(inBufL, inBufR);
-        int modOffset = __SSAT(modTime + ___SMMUL(env, ___SMMUL(timeMod, modEnv) >> 8), 28);
-        modHpCutoff = __SSAT(modHpCutoff + ___SMMUL(env << 3, ___SMMUL(hpMod << 3, modEnv << 2) << 3), 28);
-        modLpCutoff = __SSAT(modLpCutoff + ___SMMUL(env << 3, ___SMMUL(lpMod << 3, modEnv << 2) << 3), 28);
+        int modOffset = __SSAT(modTime + ___SMMUL(inEnv, ___SMMUL(timeMod, modEnv) >> 8), 28);
+        modHpCutoff = __SSAT(modHpCutoff + ___SMMUL(inEnv << 3, ___SMMUL(hpMod << 3, modEnv << 2) << 3), 28);
+        modLpCutoff = __SSAT(modLpCutoff + ___SMMUL(inEnv << 3, ___SMMUL(lpMod << 3, modEnv << 2) << 3), 28);
 
         // update filters
         int cutoff;
@@ -543,8 +533,6 @@ private:
     // modulation (lfo & env)
     unsigned int modPhase = 0;
     int modTime = 0;
-
-    EnvelopeFollowerSimple envelope;
 
     // lp and hp filter types & states
     using HP = SVFHP;
