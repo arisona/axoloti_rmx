@@ -367,10 +367,21 @@ public:
                 const int lpCutoff, const int lpReso, const int lpMod,
                 const int modRate, const int modEnv) {
 
+
+    }
+
+    int debug = 0;
+    void process(const int32buffer inBufL, const int32buffer inBufR,
+                 int32buffer outBufL, int32buffer outBufR,
+                 const int time, const int offset, const int timeMod,
+                 const int feedback, const int pingpong,
+                 const int hpCutoff, const int hpReso, const int hpMod,
+                 const int lpCutoff, const int lpReso, const int lpMod,
+                 const int modRate, const int modEnv) {
+
         // update feedback / pingpong
-        this->feedback = feedback;
-        this->sendRL = pingpong;
-        this->sendLR = ONE - sendRL;
+        int sendRL = pingpong;
+        int sendLR = ONE - sendRL;
 
         // update lfo modulation
         int modHpCutoff = 0;
@@ -395,12 +406,11 @@ public:
             // keep quiet if rate is 0 (= oscillator off)
             modPhase = 0;
             modTime = std::max(0, modTime - 1);
-            debug = modTime;
         }
 
         // update env modulation (combine with lfo modulation)
         int env = envelope.process(inBufL, inBufR);
-        modOffset = __SSAT(modTime + ___SMMUL(env, ___SMMUL(timeMod, modEnv) >> 8), 28);
+        int modOffset = __SSAT(modTime + ___SMMUL(env, ___SMMUL(timeMod, modEnv) >> 8), 28);
         modHpCutoff = __SSAT(modHpCutoff + ___SMMUL(env << 3, ___SMMUL(hpMod << 3, modEnv << 2) << 3), 28);
         modLpCutoff = __SSAT(modLpCutoff + ___SMMUL(env << 3, ___SMMUL(lpMod << 3, modEnv << 2) << 3), 28);
 
@@ -429,11 +439,8 @@ public:
             fadeInLevel = 0;
             fadeOutLevel = ONE;
         }
-    }
 
-    int debug = 0;
-    void process(const int32buffer inBufL, const int32buffer inBufR, int32buffer outBufL, int32buffer outBufR) {
-        // TODO: bypass feedback if delay time = 0
+        // finally process buffers
         for (int s = 0; s < BUFSIZE; ++s) {
             // update feedback 
             int feedbackL = ___SMMUL(lastOutL << 3, sendLR << 2) + ___SMMUL(lastOutR << 3, sendRL << 2);	
@@ -451,10 +458,10 @@ public:
             bufferR[writepos] = __SSAT(inR + feedbackR, 28);
 
             // read and mix fade in / out
-            int indexInL = mod((writepos - fadeInOffsetL - modOffset), length);
-            int indexInR = mod((writepos - fadeInOffsetR) - modOffset, length);
-            int indexOutL = mod((writepos - fadeOutOffsetL - modOffset), length);
-            int indexOutR = mod((writepos - fadeOutOffsetR - modOffset), length);
+            int indexInL = mod(writepos - fadeInOffsetL - modOffset, length);
+            int indexInR = mod(writepos - fadeInOffsetR - modOffset, length);
+            int indexOutL = mod(writepos - fadeOutOffsetL - modOffset, length);
+            int indexOutR = mod(writepos - fadeOutOffsetR - modOffset, length);
             int outL = ___SMMUL(bufferL[indexInL] << 3, fadeInLevel << 2) + ___SMMUL(bufferL[indexOutL] << 3, fadeOutLevel << 2);
             int outR = ___SMMUL(bufferR[indexInR] << 3, fadeInLevel << 2) + ___SMMUL(bufferR[indexOutR] << 3, fadeOutLevel << 2);
 
@@ -529,17 +536,13 @@ private:
     int time = 0;
     int offset = 0;
 
-    // feedback & pingpong
-    int feedback = 0;
-    int sendLR = 0;
-    int sendRL = 0;
+    // feedback
     int lastOutL = 0;
     int lastOutR = 0;
 
-    // modulation
+    // modulation (lfo & env)
     unsigned int modPhase = 0;
     int modTime = 0;
-    int modOffset = 0;
 
     EnvelopeFollowerSimple envelope;
 
