@@ -20,11 +20,11 @@ static const int MIN = -(1 << 27);
 
 
 inline int clamp(int min, int max, int value) {
-   return std::max(min, std::min(max, value));
+    return std::max(min, std::min(max, value));
 }
 
 inline float clamp(float min, float max, float value) {
-   return std::max(min ,std::min(max, value));
+    return std::max(min ,std::min(max, value));
 }
 
 inline int mod(int a, int b) {
@@ -40,46 +40,46 @@ public:
     }
 
     void update(int attack, int release) {
-		if (attack != this->attack) {
-			this->attack = attack;
-			a = time2gain(attack);
-		}
+        if (attack != this->attack) {
+            this->attack = attack;
+            a = time2gain(attack);
+        }
 
-		if (release != this->release) {
-			this->release = release;
-			r = time2gain(release);
-		}
+        if (release != this->release) {
+            this->release = release;
+            r = time2gain(release);
+        }
     }
 
-	int process(int attack, int release, const int32buffer input0, const int32buffer input1) {
+    int process(int attack, int release, const int32buffer input0, const int32buffer input1) {
         update(attack, release);
-		return process(input0, input1);
-	}
-
-	int process(const int32buffer input0, const int32buffer input1) {
-		int level = 0;
-		for (int i = 0; i < BUFSIZE; ++i) {
-			int s;
-			s = input0[i] >> (BUFSIZEPOW + 1);
-			level += s > 0 ? s : -s;
-			s = input1[i] >> (BUFSIZEPOW + 1);
-			level += s > 0 ? s : -s;
-		}
-
-		if (level > env) {
-			env = ___SMMUL(a << 2, env - level << 3) + level;
-		} else if (level < env) {
-			env = ___SMMUL(r << 2, env - level << 3) + level;
-		}
-		return __SSAT(env, 28);
+        return process(input0, input1);
     }
 
-	inline int get() const {
-		return env;
-	}
+    int process(const int32buffer input0, const int32buffer input1) {
+        int level = 0;
+        for (int i = 0; i < BUFSIZE; ++i) {
+            int s;
+            s = input0[i] >> (BUFSIZEPOW + 1);
+            level += s > 0 ? s : -s;
+            s = input1[i] >> (BUFSIZEPOW + 1);
+            level += s > 0 ? s : -s;
+        }
+
+        if (level > env) {
+            env = ___SMMUL(a << 2, env - level << 3) + level;
+        } else if (level < env) {
+            env = ___SMMUL(r << 2, env - level << 3) + level;
+        }
+        return __SSAT(env, 28);
+    }
+
+    inline int get() const {
+        return env;
+    }
 
 private:
-	static inline int time2gain(int t) {
+    static inline int time2gain(int t) {
         static const float EXP_T[64] = {
             0.001f, 0.001155f, 0.001334f, 0.00154f, 0.001778f, 0.002054f, 0.002371f, 0.002738f,
             0.003162f, 0.003652f, 0.004217f, 0.00487f, 0.005623f, 0.006494f, 0.007499f, 0.00866f, 
@@ -91,80 +91,80 @@ private:
             3.162278f, 3.651741f, 4.216965f, 4.869675f, 5.623413f, 6.493816f, 7.498942f, 8.659643f, 
         };
 
-		t = (t >> (27 - 6)) & 0x3f;
-		return float_to_q27((float)pow(0.1, 1.0 / (EXP_T[t] * SAMPLERATE / BUFSIZE)));
-	}
+        t = (t >> (27 - 6)) & 0x3f;
+        return float_to_q27((float)pow(0.1, 1.0 / (EXP_T[t] * SAMPLERATE / BUFSIZE)));
+    }
 
-	int attack = -1;
-	int release = -1;
+    int attack = -1;
+    int release = -1;
 
-	int a = 0;
-	int r = 0;
-	int env = 0;
+    int a = 0;
+    int r = 0;
+    int env = 0;
 };
 
 
 class EnvelopeFollowerSimple final {
     // from Axoloti Follower object
 public:
-	EnvelopeFollowerSimple() {
-	}
+    EnvelopeFollowerSimple() {
+    }
 
-	int process(const int32buffer input0, const int32buffer input1) {
-		int level = 0;
-		for (int i = 0; i < BUFSIZE; ++i) {
-			int s;
-			s = input0[i] >> 1;
-			level += s > 0 ? s : -s;
-			s = input1[i] >> 1;
-			level += s > 0 ? s : -s;
-		}
-		envelope -= envelope >> slope;
-		envelope += level >> (slope + 4);
-		return envelope;
-	}
+    int process(const int32buffer input0, const int32buffer input1) {
+        int level = 0;
+        for (int i = 0; i < BUFSIZE; ++i) {
+            int s;
+            s = input0[i] >> 1;
+            level += s > 0 ? s : -s;
+            s = input1[i] >> 1;
+            level += s > 0 ? s : -s;
+        }
+        envelope -= envelope >> slope;
+        envelope += level >> (slope + 4);
+        return envelope;
+    }
 
-	inline int get() const {
-		return envelope;
-	}
+    inline int get() const {
+        return envelope;
+    }
 
 private:
-	// 2=1.3ms 3=2.7ms 4=5.3ms 5=10.6ms 6=21.2ms 7=42.6ms 8=85.3ms 9=170.7ms
-	int slope = 4;
-	int envelope = 0;
+    // 2=1.3ms 3=2.7ms 4=5.3ms 5=10.6ms 6=21.2ms 7=42.6ms 8=85.3ms 9=170.7ms
+    int slope = 4;
+    int envelope = 0;
 };
 
 
 namespace detail {
 
 class SVFBase {
-	// from Axoloti SVF
-	// in addition, see: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=92
+    // from Axoloti SVF
+    // in addition, see: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=92
 public:
-	SVFBase() {}
+    SVFBase() {}
 
-	void setup(int cutoff, int reso) {
-		int alpha = 0;
-		MTOFEXTENDED(cutoff, alpha);
-		SINE2TINTERP(alpha, freq);		
+    void setup(int cutoff, int reso) {
+        int alpha = 0;
+        MTOFEXTENDED(cutoff, alpha);
+        SINE2TINTERP(alpha, freq);		
 
         damp = INT_MAX - (reso << 3) - (reso << 2);
-	}
+    }
 
 protected:
     inline void processInternal(int sample) {
-		int notch = sample - (___SMMUL(damp, band) << 1);
-		low = low + (___SMMUL(freq, band) << 1);
-		high = notch - low;
-		band = (___SMMUL(freq, high) << 1) + band;
+        int notch = sample - (___SMMUL(damp, band) << 1);
+        low = low + (___SMMUL(freq, band) << 1);
+        high = notch - low;
+        band = (___SMMUL(freq, high) << 1) + band;
     }
 
-	int freq = 0;
-	int damp = 0;
+    int freq = 0;
+    int damp = 0;
 
-	int low = 0;
+    int low = 0;
     int high = 0;
-	int band = 0;
+    int band = 0;
 };
 
 } // namespace detail
@@ -173,10 +173,10 @@ class SVFLP final : public detail::SVFBase {
 public:
     SVFLP() {}
 
-	inline int process(int sample) {
+    inline int process(int sample) {
         processInternal(sample);
         return low;
-	}
+    }
 
     inline void process(const int32buffer in, int32buffer out) {
         for (int i = 0; i < BUFSIZE; ++i) {
@@ -189,10 +189,10 @@ class SVFBP final : public detail::SVFBase {
 public:
     SVFBP() {}
 
-	inline int process(int sample) {
+    inline int process(int sample) {
         processInternal(sample);
         return band;
-	}
+    }
 
     inline void process(const int32buffer in, int32buffer out) {
         for (int i = 0; i < BUFSIZE; ++i) {
@@ -205,10 +205,10 @@ class SVFHP final : public detail::SVFBase {
 public:
     SVFHP() {}
 
-	inline int process(int sample) {
+    inline int process(int sample) {
         processInternal(sample);
         return high;
-	}
+    }
 
     inline void process(const int32buffer in, int32buffer out) {
         for (int i = 0; i < BUFSIZE; ++i) {

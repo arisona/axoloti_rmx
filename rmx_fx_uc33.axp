@@ -235,7 +235,7 @@
    </obj>
    <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d time" x="238" y="686">
       <params>
-         <frac32.u.map name="value" MidiCC="10" value="19.0"/>
+         <frac32.u.map name="value" MidiCC="10" value="21.0"/>
       </params>
       <attribs/>
    </obj>
