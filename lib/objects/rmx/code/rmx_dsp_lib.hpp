@@ -20,11 +20,11 @@ static const int MIN = -(1 << 27);
 
 
 inline int clamp(int min, int max, int value) {
-   return std::max(min, std::min(max, value));
+    return std::max(min, std::min(max, value));
 }
 
 inline float clamp(float min, float max, float value) {
-   return std::max(min ,std::min(max, value));
+    return std::max(min ,std::min(max, value));
 }
 
 inline int mod(int a, int b) {
