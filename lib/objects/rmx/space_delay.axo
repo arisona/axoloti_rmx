@@ -2,7 +2,7 @@
    <obj.normal id="space_delay" uuid="02c0fd21-6052-4d71-8c52-8e79e42326bd">
       <sDescription>space delay</sDescription>
       <author>robot_mixeur</author>
-      <license>BSD</license>
+      <license>GPL</license>
       <inlets>
          <frac32buffer name="l" description="Left input"/>
          <frac32buffer name="r" description="Right input"/>

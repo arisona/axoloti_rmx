@@ -3,7 +3,7 @@
       <params/>
       <attribs/>
    </obj>
-   <obj type="rmx/gain_stereo" uuid="6efeb957-6eab-4c84-abcc-6f3191bc8652" name="input_gain" x="224" y="14">
+   <obj type="rmx/gain_stereo" uuid="6efeb957-6eab-4c84-abcc-6f3191bc8652" name="gain_stereo_1" x="224" y="14">
       <params/>
       <attribs/>
    </obj>
@@ -18,7 +18,7 @@
          <spinner attributeName="fadetime" value="13"/>
       </attribs>
    </obj>
-   <obj type="rmx/mix3_stereo" uuid="ae3629df-aeea-483f-b280-665200c6a909" name="final_mix" x="952" y="14">
+   <obj type="rmx/mix3_stereo" uuid="ae3629df-aeea-483f-b280-665200c6a909" name="mix3_stereo_1" x="952" y="14">
       <params/>
       <attribs/>
    </obj>
@@ -278,25 +278,25 @@
    <nets>
       <net>
          <source obj="input" outlet="right"/>
-         <dest obj="input_gain" inlet="r"/>
          <dest obj="vu right" inlet="1"/>
-         <dest obj="final_mix" inlet="r0"/>
+         <dest obj="gain_stereo_1" inlet="r"/>
+         <dest obj="mix3_stereo_1" inlet="r0"/>
          <dest obj="env_follower_1" inlet="r"/>
       </net>
       <net>
          <source obj="input" outlet="left"/>
          <dest obj="vu left" inlet="1"/>
-         <dest obj="input_gain" inlet="l"/>
-         <dest obj="final_mix" inlet="l0"/>
+         <dest obj="gain_stereo_1" inlet="l"/>
+         <dest obj="mix3_stereo_1" inlet="l0"/>
          <dest obj="env_follower_1" inlet="l"/>
       </net>
       <net>
          <source obj="dry mix" outlet="out"/>
-         <dest obj="final_mix" inlet="mix0"/>
+         <dest obj="mix3_stereo_1" inlet="mix0"/>
       </net>
       <net>
          <source obj="wet mix" outlet="out"/>
-         <dest obj="final_mix" inlet="mix1"/>
+         <dest obj="mix3_stereo_1" inlet="mix1"/>
       </net>
       <net>
          <source obj="d time mod" outlet="out"/>
@@ -348,7 +348,7 @@
       </net>
       <net>
          <source obj="input gain" outlet="out"/>
-         <dest obj="input_gain" inlet="gain"/>
+         <dest obj="gain_stereo_1" inlet="gain"/>
       </net>
       <net>
          <source obj="d lp cutoff" outlet="out"/>
@@ -356,11 +356,11 @@
       </net>
       <net>
          <source obj="space_delay_1" outlet="l"/>
-         <dest obj="final_mix" inlet="l1"/>
+         <dest obj="mix3_stereo_1" inlet="l1"/>
       </net>
       <net>
          <source obj="space_delay_1" outlet="r"/>
-         <dest obj="final_mix" inlet="r1"/>
+         <dest obj="mix3_stereo_1" inlet="r1"/>
       </net>
       <net>
          <source obj="reverb_1" outlet="l"/>
@@ -371,11 +371,11 @@
          <dest obj="space_delay_1" inlet="r"/>
       </net>
       <net>
-         <source obj="input_gain" outlet="l"/>
+         <source obj="gain_stereo_1" outlet="l"/>
          <dest obj="reverb_1" inlet="l"/>
       </net>
       <net>
-         <source obj="input_gain" outlet="r"/>
+         <source obj="gain_stereo_1" outlet="r"/>
          <dest obj="reverb_1" inlet="r"/>
       </net>
       <net>
@@ -396,15 +396,15 @@
       </net>
       <net>
          <source obj="master gain" outlet="out"/>
-         <dest obj="final_mix" inlet="master"/>
+         <dest obj="mix3_stereo_1" inlet="master"/>
       </net>
       <net>
-         <source obj="final_mix" outlet="l"/>
+         <source obj="mix3_stereo_1" outlet="l"/>
          <dest obj="output" inlet="left"/>
          <dest obj="vu left" inlet="2"/>
       </net>
       <net>
-         <source obj="final_mix" outlet="r"/>
+         <source obj="mix3_stereo_1" outlet="r"/>
          <dest obj="output" inlet="right"/>
          <dest obj="vu right" inlet="2"/>
       </net>

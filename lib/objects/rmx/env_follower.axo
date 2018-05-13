@@ -4,7 +4,7 @@
 
 Times are mapped expontentially from 0 to ~8s, with a value of 32 corresponding to ~100ms.</sDescription>
       <author>robot_mixeur</author>
-      <license>BSD</license>
+      <license>GPL</license>
       <inlets>
          <frac32buffer name="l" description="Left input"/>
          <frac32buffer name="r" description="Right input"/>

@@ -1,3 +1,14 @@
+//
+// DSP Utilities for Axoloti patches
+//
+// Copyright (c) Stefan Arisona aka robot_mixeur
+//
+// https://robotized.arisona.ch
+//
+// License: GPL
+//
+
+
 #pragma once
 
 namespace rmx {

@@ -2,7 +2,7 @@
    <obj.normal id="mix3_stereo" uuid="ae3629df-aeea-483f-b280-665200c6a909">
       <sDescription>3 input s-rate stereo mixer with main gain</sDescription>
       <author>robot_mixeur</author>
-      <license>BSD</license>
+      <license>GPL</license>
       <inlets>
          <frac32buffer name="l0" description="Left input 0"/>
          <frac32buffer name="r0" description="Right input 0"/>

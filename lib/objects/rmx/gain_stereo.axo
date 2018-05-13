@@ -2,7 +2,7 @@
    <obj.normal id="gain_stereo" uuid="6efeb957-6eab-4c84-abcc-6f3191bc8652">
       <sDescription>1 input s-rate stereo gain</sDescription>
       <author>robot_mixeur</author>
-      <license>BSD</license>
+      <license>GPL</license>
       <inlets>
          <frac32buffer name="l" description="Left input"/>
          <frac32buffer name="r" description="Right input"/>
