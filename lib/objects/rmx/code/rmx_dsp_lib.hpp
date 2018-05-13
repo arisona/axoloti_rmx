@@ -18,6 +18,8 @@ static const int BUFSIZEPOW = 4;
 static const int ONE = (1 << 27) - 1;
 static const int MIN = -(1 << 27);
 
+static const int CONTROLRATE = SAMPLERATE >> BUFSIZEPOW;
+
 
 inline int clamp(int min, int max, int value) {
     return std::max(min, std::min(max, value));
@@ -31,6 +33,33 @@ inline int mod(int a, int b) {
     int r = a % b;
     return r < 0 ? r + b : r;
 }
+
+
+template<typename T, int length>
+class MovingAverage final {
+public:
+    MovingAverage() {
+        for (int i = 0; i < length; ++i)
+            buffer[i] = T();
+    }
+
+    ~MovingAverage() {
+    }
+
+    T process(T value) {
+        sum -= buffer[pos];
+        sum += value;
+        buffer[pos] = value;
+        pos = (pos + 1) % length;
+        return sum / length;
+    }
+
+private:
+    T buffer[length];
+    int pos = 0;
+    int sum = 0;
+};
+
 
 
 class EnvelopeFollower final {	
@@ -92,7 +121,7 @@ private:
         };
 
         t = (t >> (27 - 6)) & 0x3f;
-        return float_to_q27((float)pow(0.1, 1.0 / (EXP_T[t] * SAMPLERATE / BUFSIZE)));
+        return float_to_q27((float)pow(0.1, 1.0 / (EXP_T[t] * CONTROLRATE)));
     }
 
     int attack = -1;
@@ -373,14 +402,13 @@ public:
 
     int debug = 0;
     void process(const int32buffer inBufL, const int32buffer inBufR,
-                 const int inEnv,
                  int32buffer outBufL, int32buffer outBufR,
                  const int time, const int offset, const int timeMod,
                  const int feedback, const int pingpong,
                  const int hpCutoff, const int hpReso, const int hpMod,
                  const int lpCutoff, const int lpReso, const int lpMod,
                  const int modRate, const int modEnv,
-                 const int bpm) {
+                 const int bdur, const int env) {
 
         // update feedback / pingpong
         int sendRL = pingpong;
@@ -412,9 +440,9 @@ public:
         }
 
         // update env modulation (combine with lfo modulation)
-        int modOffset = __SSAT(modTime + ___SMMUL(inEnv, ___SMMUL(timeMod, modEnv) >> 8), 28);
-        modHpCutoff = __SSAT(modHpCutoff + ___SMMUL(inEnv << 3, ___SMMUL(hpMod << 3, modEnv << 2) << 3), 28);
-        modLpCutoff = __SSAT(modLpCutoff + ___SMMUL(inEnv << 3, ___SMMUL(lpMod << 3, modEnv << 2) << 3), 28);
+        int modOffset = __SSAT(modTime + ___SMMUL(env, ___SMMUL(timeMod, modEnv) >> 8), 28);
+        modHpCutoff = __SSAT(modHpCutoff + ___SMMUL(env << 3, ___SMMUL(hpMod << 3, modEnv << 2) << 3), 28);
+        modLpCutoff = __SSAT(modLpCutoff + ___SMMUL(env << 3, ___SMMUL(lpMod << 3, modEnv << 2) << 3), 28);
 
         // update filters
         int cutoff;
@@ -427,13 +455,13 @@ public:
         lpR.setup(cutoff, lpReso);
 
         // update time / read offsets
-        if (!isFading && (time != this->time || offset != this->offset || bpm != this->bpm)) {
+        if (!isFading && (time != this->time || offset != this->offset || bdur != this->bdur)) {
             this->time = time;
             this->offset = offset;
-            this->bpm = bpm;
+            this->bdur = bdur;
 
             fadeOutOffsetL = fadeInOffsetL;
-            fadeInOffsetL = time2offset(time, length, bpm);
+            fadeInOffsetL = time2offset(time, length, bdur);
 
             fadeOutOffsetR = fadeInOffsetR;
             fadeInOffsetR = fadeInOffsetL + time2offset(offset, length);
@@ -495,7 +523,7 @@ private:
     // pingpong: 4 8 12 16 20 24 32 64 / 64
     // combined: 1/64 2/64 4/64 8/64 12/64 16/64 20/64 24/64 32/64 64/64
 
-    inline int time2offset(int t, int length, int bpm = 0) {
+    inline int time2offset(int t, int length, int bdur = 0) {
         // time table: it increases exp (almost) first, afterwards linear up to 2 seconds.
         static const int TIMES[128] = {
             // start=0 (0ms) end=6000.0 (125.0ms) inc=exponential (including 0, strictly monotonic)
@@ -520,16 +548,17 @@ private:
             0, 1, 2, 4, 8, 12, 16, 20, 24, 32
         };
 
-        if (bpm == 0) {
+        if (bdur == 0) {
             t = (t >> (27 - 7)) & 0x7f;
             return std::min(TIMES[t], length - 1);
         } else {
             // make sure values are properly scaled on dial
             t = (int)(8.4f * q27_to_float(t) + 0.8f);
+            debug = t;
             if (t < 0)
                 return 0;
 
-            float duration64th = (60.0f / 16.0f) / bpm;
+            float duration64th = bdur / 16.0f / 1000.0f;
             float duration = duration64th * BEATS[t];
             int samples = (int)(duration * SAMPLERATE);
             return std::min(samples, length - 1);
@@ -559,7 +588,7 @@ private:
     // time parameters (cached, so we can track when time changes to initiated fading)
     int time = 0;
     int offset = 0;
-    int bpm = 0;
+    int bdur = 0;
 
     // feedback
     int lastOutL = 0;
@@ -576,6 +605,47 @@ private:
     HP hpR;
     LP lpL;
     LP lpR;
+};
+
+
+
+class MidiClock final {
+public:
+    MidiClock() {}
+
+    int process() {
+        time++;
+        // check for lost midi clock
+        if (time - clockTime > CONTROLRATE)
+            bdur = 0;
+        return bdur;
+    }
+
+    void processMidi(midi_device_t device, uint8_t port, uint8_t status, uint8_t data1, uint8_t data2) {
+        if (status != MIDI_TIMING_CLOCK)
+            return;
+        unsigned int delta = time - clockTime;
+        clockTime = time;
+
+        if (delta > 0) {
+            bdur = (int)(24.0f * 1000.0f * (float)delta / (float)CONTROLRATE); // note: 24ppq!
+        } else {
+            bdur = 0;
+        }
+        bdur = average.process(bdur);
+    }
+
+private:
+    void processClock() {
+
+    }
+
+    unsigned int time = 0;
+    unsigned int clockTime = 0;
+
+    MovingAverage<int, 16> average;
+
+    int bdur = 0;
 };
 
 } // namespace rmx

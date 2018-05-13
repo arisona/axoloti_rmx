@@ -6,7 +6,6 @@
       <inlets>
          <frac32buffer name="l" description="Left input"/>
          <frac32buffer name="r" description="Right input"/>
-         <frac32 name="env" description="Envelope input"/>
          <frac32 name="time" description="Delay time"/>
          <frac32 name="offset" description="Delay time offset for right channel"/>
          <frac32 name="timeMod" description="Delay time modulation amount"/>
@@ -20,7 +19,8 @@
          <frac32 name="hpReso" description="HP resonance"/>
          <frac32 name="modRate" description="Modulation rate, zero to disable LFO"/>
          <frac32 name="modEnv" description="Envelope modulation mix"/>
-         <int32 name="bpm" description="BPM, zero to disable sync mode"/>
+         <frac32 name="env" description="Envelope input"/>
+         <int32 name="bdur" description="Duration of one beat, in ms, zero to disable timesync"/>
       </inlets>
       <outlets>
          <frac32buffer name="l" description="Left output"/>
@@ -41,13 +41,13 @@
 static int32_t _arrayR[attr_length] __attribute__ ((section (".sdram")));
 
 delay.setup(&_arrayL[0], &_arrayR[0]);]]></code.init>
-      <code.krate><![CDATA[delay.process(inlet_l, inlet_r, inlet_env, outlet_l, outlet_r,
+      <code.krate><![CDATA[delay.process(inlet_l, inlet_r, outlet_l, outlet_r,
 		    inlet_time, inlet_offset, inlet_timeMod,
 		    inlet_feedback, inlet_pingpong,
 		    inlet_hpCutoff, inlet_hpReso, inlet_hpMod,
 		    inlet_lpCutoff, inlet_lpReso, inlet_lpMod,
-		    inlet_modRate, inlet_modEnv, 
-		    inlet_bpm);
+		    inlet_modRate, inlet_modEnv,
+		    inlet_bdur, inlet_env);
 
 outlet_debug = delay.debug;]]></code.krate>
    </obj.normal>

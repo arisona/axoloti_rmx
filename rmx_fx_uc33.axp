@@ -42,14 +42,14 @@
          <combo attributeName="mode" selection="Stereo"/>
       </attribs>
    </obj>
+   <obj type="disp/kscope 128 p" uuid="664f9317a38a6910ae9bc020e00ca2dd2ee692fa" name="kscope_1" x="406" y="140">
+      <params/>
+      <attribs/>
+   </obj>
    <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="master gain" x="854" y="140">
       <params>
          <frac32.u.map name="value" value="64.0"/>
       </params>
-      <attribs/>
-   </obj>
-   <obj type="disp/kscope 128 p" uuid="664f9317a38a6910ae9bc020e00ca2dd2ee692fa" name="kscope_1" x="336" y="168">
-      <params/>
       <attribs/>
    </obj>
    <obj type="audio/outconfig" uuid="eace67e3304afaa1bb695b444e9345f2d8adaf00" name="output config" x="14" y="224">
@@ -59,13 +59,11 @@
          <combo attributeName="mode" selection="Stereo"/>
       </attribs>
    </obj>
-   <obj type="ctrl/i" uuid="a3786816db6ea5bc6ac4193a5cccdb2c83b83496" name="i_1" x="504" y="238">
-      <params>
-         <int32 name="value" value="120"/>
-      </params>
+   <obj type="disp/i" uuid="5e35fd0c62d81e70017289250cf28edd26e19e4a" name="i_2" x="826" y="266">
+      <params/>
       <attribs/>
    </obj>
-   <obj type="disp/i" uuid="5e35fd0c62d81e70017289250cf28edd26e19e4a" name="i_2" x="840" y="294">
+   <obj type="rmx/midi_clock" uuid="6a4a5519-3e4e-4095-9798-61c8763ea466" name="midi clock" x="14" y="294">
       <params/>
       <attribs/>
    </obj>
@@ -77,7 +75,7 @@
    </obj>
    <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="r lp" x="126" y="392">
       <params>
-         <frac32.u.map name="value" MidiCC="54" value="0.0"/>
+         <frac32.u.map name="value" MidiCC="54" value="18.5"/>
       </params>
       <attribs/>
    </obj>
@@ -116,6 +114,14 @@
          <frac32.u.map name="value" value="0.0"/>
       </params>
       <attribs/>
+   </obj>
+   <obj type="drj/seq/bpm_detect" uuid="1143145e5e9ad309eaf65a47b14cfffabca43295" name="bpm_detect_1" x="1008" y="392">
+      <params/>
+      <attribs>
+         <combo attributeName="clocksource" selection="External"/>
+         <combo attributeName="device" selection="omni"/>
+         <combo attributeName="smooth" selection="0"/>
+      </attribs>
    </obj>
    <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="env release" x="14" y="490">
       <params>
@@ -235,7 +241,7 @@
    </obj>
    <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d time" x="238" y="686">
       <params>
-         <frac32.u.map name="value" MidiCC="10" value="21.0"/>
+         <frac32.u.map name="value" MidiCC="10" value="0.0"/>
       </params>
       <attribs/>
    </obj>
@@ -426,12 +432,12 @@
          <dest obj="env_follower_1" inlet="release"/>
       </net>
       <net>
-         <source obj="i_1" outlet="out"/>
-         <dest obj="space_delay_1" inlet="bpm"/>
-      </net>
-      <net>
          <source obj="space_delay_1" outlet="debug"/>
          <dest obj="i_2" inlet="in"/>
+      </net>
+      <net>
+         <source obj="midi clock" outlet="bdur"/>
+         <dest obj="space_delay_1" inlet="bdur"/>
       </net>
    </nets>
    <settings>
@@ -439,7 +445,7 @@
    </settings>
    <notes><![CDATA[]]></notes>
    <windowPos>
-      <x>161</x>
+      <x>167</x>
       <y>22</y>
       <width>1241</width>
       <height>878</height>

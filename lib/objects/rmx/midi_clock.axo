@@ -1,0 +1,27 @@
+<objdefs appVersion="1.0.12">
+   <obj.normal id="midi_clock" uuid="6a4a5519-3e4e-4095-9798-61c8763ea466">
+      <sDescription>Output bpm either from MIDI clock source or by tapping via Midi button.</sDescription>
+      <author>robot_mixeur</author>
+      <license>GPL</license>
+      <inlets/>
+      <outlets>
+         <int32 name="bdur" description="Duration of one beat, in ms"/>
+      </outlets>
+      <displays>
+         <int32.label name="bpm" noLabel="true"/>
+      </displays>
+      <params/>
+      <attribs/>
+      <includes>
+         <include>./code/rmx_dsp_lib.hpp</include>
+      </includes>
+      <code.declaration><![CDATA[rmx::MidiClock clock;]]></code.declaration>
+      <code.krate><![CDATA[int bdur = clock.process();
+outlet_bdur = bdur;
+if (bdur > 0)
+	disp_bpm = (int)(60.0f * 1000.0f / bdur);
+else
+	disp_bpm = -1;]]></code.krate>
+      <code.midihandler><![CDATA[clock.processMidi(dev, port, status, data1, data2);]]></code.midihandler>
+   </obj.normal>
+</objdefs>
