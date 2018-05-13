@@ -368,7 +368,8 @@ public:
                  const int feedback, const int pingpong,
                  const int hpCutoff, const int hpReso, const int hpMod,
                  const int lpCutoff, const int lpReso, const int lpMod,
-                 const int modRate, const int modEnv) {
+                 const int modRate, const int modEnv,
+                 const int bpm) {
 
         // update feedback / pingpong
         int sendRL = pingpong;
@@ -415,12 +416,13 @@ public:
         lpR.setup(cutoff, lpReso);
 
         // update time / read offsets
-        if (!isFading && (time != this->time || offset != this->offset)) {
+        if (!isFading && (time != this->time || offset != this->offset || bpm != this->bpm)) {
             this->time = time;
             this->offset = offset;
+            this->bpm = bpm;
 
             fadeOutOffsetL = fadeInOffsetL;
-            fadeInOffsetL = time2offset(time, length);
+            fadeInOffsetL = time2offset(time, length, bpm);
 
             fadeOutOffsetR = fadeInOffsetR;
             fadeInOffsetR = fadeInOffsetL + time2offset(offset, length);
@@ -482,24 +484,45 @@ private:
     // pingpong: 4 8 12 16 20 24 32 64 / 64
     // combined: 1/64 2/64 4/64 8/64 12/64 16/64 20/64 24/64 32/64 64/64
 
-    inline int time2offset(int t, int length) {
-        // this table is pretty ad-hoc. it increases non-linear first, afterwards linear up to 2 seconds.
-        static const int OFFSETS[128] = {
-            0,     10,    20,    30,    40,    60,    80,    100,   200,   300,   400,   500,   600,   700,   900,   1200,
-            1725,  3210,  4695,  6180,  7665,  9150,  10635, 12120, 13605, 15090, 16575, 18060, 19545, 21030, 22515, 24000,
-            
+    inline int time2offset(int t, int length, int bpm = 0) {
+        // time table: it increases exp (almost) first, afterwards linear up to 2 seconds.
+        static const int TIMES[128] = {
+            // start=0 (0ms) end=6000.0 (125.0ms) inc=exponential (including 0, strictly monotonic)
+            0, 1, 2, 3, 4, 5, 6, 7, 9, 12, 16, 21, 29, 38, 50, 67, 
+            89, 118, 156, 206, 273, 362, 480, 635, 841, 1114, 1474, 1952, 2585, 3422, 4531, 6000, 
+
+            // start=6562.5 (136.71875ms) end=24000.0 (500.0ms) inc=562.5 (11.71875ms) 
+            6562, 7125, 7687, 8250, 8812, 9375, 9937, 10500, 11062, 11625, 12187, 12750, 13312, 13875, 14437, 15000, 
+            15562, 16125, 16687, 17250, 17812, 18375, 18937, 19500, 20062, 20625, 21187, 21750, 22312, 22875, 23437, 24000, 
+
+            // start=24750.0 (515.625ms) end=48000.0 (1000.0ms) inc=750.0 (15.625ms) 
             24750, 25500, 26250, 27000, 27750, 28500, 29250, 30000, 30750, 31500, 32250, 33000, 33750, 34500, 35250, 36000, 
-            36750, 37500, 38250, 39000, 39750, 40500, 41250, 42000, 42750, 43500, 44250, 45000, 45750, 46500, 47250, 48000,
+            36750, 37500, 38250, 39000, 39750, 40500, 41250, 42000, 42750, 43500, 44250, 45000, 45750, 46500, 47250, 48000, 
 
-            48750, 49500, 50250, 51000, 51750, 52500, 53250, 54000, 54750, 55500, 56250, 57000, 57750, 58500, 59250, 60000,
-            60750, 61500, 62250, 63000, 63750, 64500, 65250, 66000, 66750, 67500, 68250, 69000, 69750, 70500, 71250, 72000,
-
-            72750, 73500, 74250, 75000, 75750, 76500, 77250, 78000, 78750, 79500, 80250, 81000, 81750, 82500, 83250, 84000,
-            84750, 85500, 86250, 87000, 87750, 88500, 89250, 90000, 90750, 91500, 92250, 93000, 93750, 94500, 95250, 96000,
+            // start=49500.0 (1031.25ms) end=96000.0 (2000.0ms) inc=1500.0 (31.25ms) 
+            49500, 51000, 52500, 54000, 55500, 57000, 58500, 60000, 61500, 63000, 64500, 66000, 67500, 69000, 70500, 72000, 
+            73500, 75000, 76500, 78000, 79500, 81000, 82500, 84000, 85500, 87000, 88500, 90000, 91500, 93000, 94500, 96000, 
         };
 
-		t = (t >> (27 - 7)) & 0x7f;
-        return std::min(OFFSETS[t], length - 1);
+        // beat table: multiples of 1/64 notes
+        static const float BEATS[] = {
+            0, 1, 2, 4, 8, 12, 16, 20, 24, 32
+        };
+
+        if (bpm == 0) {
+            t = (t >> (27 - 7)) & 0x7f;
+            return std::min(TIMES[t], length - 1);
+        } else {
+            // make sure values are properly scaled on dial
+            t = (int)(8.4f * q27_to_float(t) + 0.8f);
+            if (t < 0)
+                return 0;
+
+            float duration64th = (60.0f / 16.0f) / bpm;
+            float duration = duration64th * BEATS[t];
+            int samples = (int)(duration * SAMPLERATE);
+            return std::min(samples, length - 1);
+        }
     }
 
 
@@ -522,9 +545,10 @@ private:
 
     bool isFading = false;
 
-    // delay time and offset (cached, so we can track when time changes to initiated fading)
+    // time parameters (cached, so we can track when time changes to initiated fading)
     int time = 0;
     int offset = 0;
+    int bpm = 0;
 
     // feedback
     int lastOutL = 0;

@@ -10,7 +10,7 @@
          <frac32 name="time" description="Delay time"/>
          <frac32 name="offset" description="Delay time offset for right channel"/>
          <frac32 name="timeMod" description="Delay time modulation amount"/>
-         <frac32 name="feedback" description="Feedback"/>
+         <frac32 name="feedback" description="Feedback amount"/>
          <frac32 name="pingpong" description="Pingpong amount"/>
          <frac32 name="lpCutoff" description="LP cutoff frequency"/>
          <frac32 name="lpMod" description="LP cutoff modulation amount"/>
@@ -18,8 +18,9 @@
          <frac32 name="hpCutoff" description="HP cutoff frequency"/>
          <frac32 name="hpMod" description="HP cutoff modulation amount"/>
          <frac32 name="hpReso" description="HP resonance"/>
-         <frac32 name="modRate" description="Modulation rate"/>
+         <frac32 name="modRate" description="Modulation rate, zero to disable LFO"/>
          <frac32 name="modEnv" description="Envelope modulation mix"/>
+         <int32 name="bpm" description="BPM, zero to disable sync mode"/>
       </inlets>
       <outlets>
          <frac32buffer name="l" description="Left output"/>
@@ -45,7 +46,8 @@ delay.setup(&_arrayL[0], &_arrayR[0]);]]></code.init>
 		    inlet_feedback, inlet_pingpong,
 		    inlet_hpCutoff, inlet_hpReso, inlet_hpMod,
 		    inlet_lpCutoff, inlet_lpReso, inlet_lpMod,
-		    inlet_modRate, inlet_modEnv);
+		    inlet_modRate, inlet_modEnv, 
+		    inlet_bpm);
 
 outlet_debug = delay.debug;]]></code.krate>
    </obj.normal>
