@@ -40,7 +40,7 @@ class MovingAverage final {
 public:
     MovingAverage() {
         for (int i = 0; i < length; ++i)
-            buffer[i] = T();
+            buffer[i] = T{};
     }
 
     ~MovingAverage() {
@@ -56,8 +56,8 @@ public:
 
 private:
     T buffer[length];
+    T sum = T{};
     int pos = 0;
-    int sum = 0;
 };
 
 
