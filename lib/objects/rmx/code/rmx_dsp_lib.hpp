@@ -50,7 +50,7 @@ public:
         sum -= buffer[pos];
         sum += value;
         buffer[pos] = value;
-        pos = (pos + 1) % length;
+        pos = pos < length - 1 ? pos + 1 : 0;
         return sum / length;
     }
 
@@ -276,11 +276,24 @@ public:
     }
 
 protected:
-    bool doSetup(int cutoff, int reso) {
+    bool doSetup(int cutoff, int reso, int& cosW0, int& alpha, int& a0_inv_q31, int& q_inv) {
         if (cutoff == this->cutoff && reso == this->reso)
             return false;
         this->cutoff = cutoff;
         this->reso = reso;
+
+        int filter_W0;
+        MTOF(cutoff, filter_W0);
+        q_inv = INT_MAX - (__USAT(reso, 27) << 4);
+
+        filter_W0 = filter_W0 >> 1;
+        int sinW0 = arm_sin_q31(filter_W0);
+        cosW0 = arm_cos_q31(filter_W0);
+        alpha = ___SMMUL(sinW0, q_inv);
+        float filter_a0 = (HALFQ31 + alpha);
+        float filter_a0_inv = ((INT32_MAX >> 2) / filter_a0);
+        a0_inv_q31 = (int)(INT32_MAX * filter_a0_inv);
+
         return true;
     }
 
@@ -307,20 +320,13 @@ public:
     BiquadLP() {}
 
     void setup(int cutoff, int reso) {
-        if (!doSetup(cutoff, reso))
+        int cosW0;
+        int alpha;
+        int a0_inv_q31;
+        int q_inv;
+        if (!doSetup(cutoff, reso, cosW0, alpha, a0_inv_q31, q_inv))
             return;
 
-        int filter_W0;
-        MTOF(cutoff, filter_W0);
-        int q_inv = INT_MAX - (__USAT(reso, 27) << 4);
-
-        filter_W0 = filter_W0 >> 1;
-        int sinW0 = arm_sin_q31(filter_W0);
-        int cosW0 = arm_cos_q31(filter_W0);
-        int alpha = ___SMMUL(sinW0, q_inv);
-        float filter_a0 = (HALFQ31 + alpha);
-        float filter_a0_inv = ((INT32_MAX >> 2) / filter_a0);
-        int a0_inv_q31 = (int)(INT32_MAX * filter_a0_inv);
         cyn_1 = ___SMMUL((-cosW0), a0_inv_q31);
         cyn_2 = ___SMMUL((HALFQ31 - alpha), a0_inv_q31);
         cxn_0 = ___SMMUL(___SMMUL(HALFQ31 - (cosW0 >> 1), a0_inv_q31), q_inv);
@@ -334,20 +340,13 @@ public:
     BiquadBP() {}
 
     void setup(int cutoff, int reso) {
-        if (!doSetup(cutoff, reso))
+        int cosW0;
+        int alpha;
+        int a0_inv_q31;
+        int q_inv;
+        if (!doSetup(cutoff, reso, cosW0, alpha, a0_inv_q31, q_inv))
             return;
 
-        int filter_W0;
-        MTOF(cutoff, filter_W0);
-        int q_inv = INT_MAX - (__USAT(reso, 27) << 4);
-
-        filter_W0 = filter_W0 >> 1;
-        int sinW0 = arm_sin_q31(filter_W0);
-        int cosW0 = arm_cos_q31(filter_W0);
-        int alpha = ___SMMUL(sinW0, q_inv);
-        float filter_a0 = (HALFQ31 + alpha);
-        float filter_a0_inv = ((INT32_MAX >> 2) / filter_a0);
-        int a0_inv_q31 = (int)(INT32_MAX * filter_a0_inv);
         cyn_1 = ___SMMUL((-cosW0), a0_inv_q31);
         cyn_2 = ___SMMUL((HALFQ31 - alpha), a0_inv_q31);
         cxn_0 = ___SMMUL(alpha, a0_inv_q31);
@@ -361,20 +360,13 @@ public:
     BiquadHP() {}
 
     void setup(int cutoff, int reso) {
-        if (!doSetup(cutoff, reso))
+        int cosW0;
+        int alpha;
+        int a0_inv_q31;
+        int q_inv;
+        if (!doSetup(cutoff, reso, cosW0, alpha, a0_inv_q31, q_inv))
             return;
 
-        int filter_W0;
-        MTOF(cutoff, filter_W0);
-        int q_inv = INT_MAX - (__USAT(reso, 27) << 4);
-
-        filter_W0 = filter_W0 >> 1;
-        int sinW0 = arm_sin_q31(filter_W0);
-        int cosW0 = arm_cos_q31(filter_W0);
-        int alpha = ___SMMUL(sinW0, q_inv);
-        float filter_a0 = (HALFQ31 + alpha);
-        float filter_a0_inv = ((INT32_MAX >> 2) / filter_a0);
-        int a0_inv_q31 = (int)(INT32_MAX * filter_a0_inv);
         cyn_1 = ___SMMUL((-cosW0), a0_inv_q31);
         cyn_2 = ___SMMUL((HALFQ31 - alpha), a0_inv_q31);
         cxn_0 = ___SMMUL(___SMMUL(HALFQ31 + (cosW0 >> 1), a0_inv_q31), q_inv);
