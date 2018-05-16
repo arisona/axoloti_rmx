@@ -1,0 +1,59 @@
+<objdefs appVersion="1.0.12">
+   <obj.normal id="gate" uuid="ae6ac73e-54af-4864-afc8-c8d798e4bfc5">
+      <sDescription>stereo gate, linear threshold</sDescription>
+      <author>robot_mixeur</author>
+      <license>GPL</license>
+      <inlets>
+         <frac32buffer name="l" description="Left input"/>
+         <frac32buffer name="r" description="Right input"/>
+         <frac32 name="thres" description="Threshold"/>
+         <frac32 name="env" description="Envelope"/>
+      </inlets>
+      <outlets>
+         <frac32buffer name="l" description="Left output"/>
+         <frac32buffer name="r" description="right output"/>
+      </outlets>
+      <displays/>
+      <params/>
+      <attribs/>
+      <includes>
+         <include>./code/rmx_dsp_lib.hpp</include>
+      </includes>
+      <code.declaration><![CDATA[int sign(int x) {
+	return (x > 0) - (x < 0);
+}
+
+int signL = 0;
+int signR = 0;]]></code.declaration>
+      <code.krate><![CDATA[if (inlet_env >= inlet_thres) {
+	for (int i = 0; i < BUFSIZE; ++i) {
+		int l = inlet_l[i];
+		if (signL == 0) {
+			outlet_l[i] = l;
+		} else {
+			outlet_l[i] = 0;
+			if (signL != sign(l)) {
+				signL = 0;
+			}
+		}
+		
+		int r = inlet_r[i];
+		if (signR == 0) {
+			outlet_r[i] = r;
+		} else {
+			outlet_r[i] = 0;
+			if (signR != sign(r)) {
+				signR = 0;
+			}
+		}
+	}
+} else {
+	for (int i = 0; i < BUFSIZE; ++i) {
+		outlet_l[i] = 0;
+		outlet_r[i] = 0;
+	}
+	signL = sign(inlet_l[BUFSIZE - 1]);
+	signR = sign(inlet_r[BUFSIZE - 1]);
+}]]></code.krate>
+   </obj.normal>
+</objdefs>

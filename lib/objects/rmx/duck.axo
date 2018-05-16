@@ -1,0 +1,44 @@
+<objdefs appVersion="1.0.12">
+   <obj.normal id="duck" uuid="20ad21e0-1654-44c9-b25c-52d2a8be26cb">
+      <sDescription>stereo duck, linear amount</sDescription>
+      <author>robot_mixeur</author>
+      <license>GPL</license>
+      <inlets>
+         <frac32buffer name="l" description="Left input"/>
+         <frac32buffer name="r" description="Right input"/>
+         <frac32 name="amount" description="Amount"/>
+         <frac32 name="env" description="Envelope"/>
+      </inlets>
+      <outlets>
+         <frac32buffer name="l" description="Left output"/>
+         <frac32buffer name="r" description="right output"/>
+      </outlets>
+      <displays/>
+      <params/>
+      <attribs/>
+      <includes>
+         <include>./code/rmx_dsp_lib.hpp</include>
+      </includes>
+      <code.declaration><![CDATA[int prev;
+int step;]]></code.declaration>
+      <code.krate><![CDATA[step = (inlet_env - prev) >> 4;
+int start = prev;
+prev = inlet_env;
+
+if (inlet_amount > 0) {
+	for (int i = 0; i < BUFSIZE; ++i) {
+		int duck = (1 << 27) - ___SMMUL(start << 3, inlet_amount << 3);
+		if (duck < 0)
+			duck = 0;
+		outlet_l[i] = ___SMMUL(inlet_l[i] << 3, duck << 2);
+		outlet_r[i] = ___SMMUL(inlet_r[i] << 3, duck << 2);
+		start += step;
+	}
+} else {
+	for (int i = 0; i < BUFSIZE; ++i) {
+		outlet_l[i] = inlet_l[i];
+		outlet_r[i] = inlet_r[i];
+	}
+}]]></code.krate>
+   </obj.normal>
+</objdefs>
