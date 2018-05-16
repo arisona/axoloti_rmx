@@ -536,23 +536,22 @@ private:
         };
 
         // beat table: multiples of 1/64 notes
-        static const float BEATS[] = {
-            0, 1, 2, 4, 8, 12, 16, 20, 24, 32
+        static const int BEATS[] = {
+            0, 1, 2, 4, 4, 8, 8, 12, 12, 16, 16, 20, 20, 24, 24, 32
         };
 
         if (bdur == 0) {
             t = (t >> (27 - 7)) & 0x7f;
             return std::min(TIMES[t], length - 1);
         } else {
-            // make sure values are properly scaled on dial
-            t = (int)(8.4f * q27_to_float(t) + 0.8f);
-            debug = t;
-            if (t < 0)
-                return 0;
+            t = (t >> (27 - 4)) & 0x0f;
+            debug = BEATS[t];
 
-            float duration64th = bdur / 16.0f / 1000.0f;
-            float duration = duration64th * BEATS[t];
-            int samples = (int)(duration * SAMPLERATE);
+            // float duration64th = bdur / 16.0f / 1000.0f;
+            // float duration = duration64th * BEATS[t];
+            // int samples = (int)(duration * SAMPLERATE);
+            // simplified to ints:
+            int samples = (SAMPLERATE / 1000 * BEATS[t] * bdur) >> 4;
             return std::min(samples, length - 1);
         }
     }
@@ -619,8 +618,9 @@ public:
         unsigned int delta = time - clockTime;
         clockTime = time;
 
+        // bdur: duration of one beat in ms. calculate from 24ppq
         if (delta > 0) {
-            bdur = (int)(24.0f * 1000.0f * (float)delta / (float)CONTROLRATE); // note: 24ppq!
+            bdur = 24 * 1000 / CONTROLRATE * delta;
         } else {
             bdur = 0;
         }
