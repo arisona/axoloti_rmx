@@ -19,26 +19,8 @@
       <includes>
          <include>./code/rmx_axo_base.hpp</include>
       </includes>
-      <code.declaration><![CDATA[int prev;
-int step;]]></code.declaration>
-      <code.krate><![CDATA[step = (inlet_env - prev) >> 4;
-int start = prev;
-prev = inlet_env;
-
-if (inlet_amount > 0) {
-	for (int i = 0; i < BUFSIZE; ++i) {
-		int duck = (1 << 27) - ___SMMUL(start << 3, inlet_amount << 3);
-		if (duck < 0)
-			duck = 0;
-		outlet_l[i] = ___SMMUL(inlet_l[i] << 3, duck << 2);
-		outlet_r[i] = ___SMMUL(inlet_r[i] << 3, duck << 2);
-		start += step;
-	}
-} else {
-	for (int i = 0; i < BUFSIZE; ++i) {
-		outlet_l[i] = inlet_l[i];
-		outlet_r[i] = inlet_r[i];
-	}
-}]]></code.krate>
+      <code.declaration><![CDATA[rmx::StereoGain<rmx::SVFLP> gain;]]></code.declaration>
+      <code.krate><![CDATA[int duck = rmx::clamp((1 << 27) - (___SMMUL(inlet_env << 3, inlet_amount << 2) << 2), 0, rmx::ONE);
+gain.process(inlet_l, inlet_r, outlet_l, outlet_r, duck);]]></code.krate>
    </obj.normal>
 </objdefs>

@@ -46,7 +46,7 @@ public:
         // update lfo modulation
         int modHpCutoff = 0;
         int modLpCutoff = 0;
-        if (modRate > MIN) {
+        if (modRate > MINUS_ONE) {
             // lfo
             int phase;
             MTOFEXTENDED(modRate, phase)
@@ -63,15 +63,15 @@ public:
             modHpCutoff = ___SMMUL(mod, hpMod);
             modLpCutoff = ___SMMUL(mod, lpMod);
         } else {
-            // keep quiet if rate is 0 (= oscillator off)
+            // keep quiet if rate is -1 (= oscillator off)
             modPhase = 0;
             modTime = std::max(0, modTime - 1);
         }
 
         // update env modulation (combine with lfo modulation)
-        int modOffset = __SSAT(modTime + ___SMMUL(env, ___SMMUL(timeMod, modEnv) >> 8), 28);
-        modHpCutoff = __SSAT(modHpCutoff + ___SMMUL(env << 4, ___SMMUL(hpMod << 3, modEnv << 2) << 3), 28);
-        modLpCutoff = __SSAT(modLpCutoff + ___SMMUL(env << 4, ___SMMUL(lpMod << 3, modEnv << 2) << 3), 28);
+        int modOffset = __SSAT(modTime + (___SMMUL(env << 3, ___SMMUL(timeMod << 3, modEnv << 2) << 2) >> 18), 28);
+        modHpCutoff = __SSAT(modHpCutoff + (___SMMUL(env << 3, ___SMMUL(hpMod << 3, modEnv << 2) << 2) << 2), 28);
+        modLpCutoff = __SSAT(modLpCutoff + (___SMMUL(env << 3, ___SMMUL(lpMod << 3, modEnv << 2) << 2) << 2), 28);
 
         // update filters
         int cutoff;

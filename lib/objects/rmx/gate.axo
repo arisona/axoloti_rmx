@@ -19,41 +19,7 @@
       <includes>
          <include>./code/rmx_axo_base.hpp</include>
       </includes>
-      <code.declaration><![CDATA[int sign(int x) {
-	return (x > 0) - (x < 0);
-}
-
-int signL = 0;
-int signR = 0;]]></code.declaration>
-      <code.krate><![CDATA[if (inlet_env >= inlet_thres) {
-	for (int i = 0; i < BUFSIZE; ++i) {
-		int l = inlet_l[i];
-		if (signL == 0) {
-			outlet_l[i] = l;
-		} else {
-			outlet_l[i] = 0;
-			if (signL != sign(l)) {
-				signL = 0;
-			}
-		}
-		
-		int r = inlet_r[i];
-		if (signR == 0) {
-			outlet_r[i] = r;
-		} else {
-			outlet_r[i] = 0;
-			if (signR != sign(r)) {
-				signR = 0;
-			}
-		}
-	}
-} else {
-	for (int i = 0; i < BUFSIZE; ++i) {
-		outlet_l[i] = 0;
-		outlet_r[i] = 0;
-	}
-	signL = sign(inlet_l[BUFSIZE - 1]);
-	signR = sign(inlet_r[BUFSIZE - 1]);
-}]]></code.krate>
+      <code.declaration><![CDATA[rmx::StereoGain<rmx::SVFLP> gain;]]></code.declaration>
+      <code.krate><![CDATA[gain.process(inlet_l, inlet_r, outlet_l, outlet_r, inlet_env >= inlet_thres ? rmx::ONE : 0);]]></code.krate>
    </obj.normal>
 </objdefs>

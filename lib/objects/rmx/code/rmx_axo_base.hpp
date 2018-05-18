@@ -15,7 +15,7 @@ namespace rmx {
 static const int BUFSIZEPOW = 4;
 
 static const int ONE = (1 << 27) - 1;
-static const int MIN = -(1 << 27);
+static const int MINUS_ONE = -(1 << 27);
 
 static const int CONTROLRATE = SAMPLERATE >> BUFSIZEPOW;
 
@@ -60,7 +60,6 @@ private:
 };
 
 
-
 namespace detail {
 
 class BiquadBase {
@@ -74,15 +73,15 @@ public:
         }
     }
 
-    inline int process(int input) {
-        int accu = ___SMMUL(cxn_0, input);
+    inline int process(int in) {
+        int accu = ___SMMUL(cxn_0, in);
         accu = ___SMMLA(cxn_1, filter_x_n1, accu);
         accu = ___SMMLA(cxn_2, filter_x_n2, accu);
         accu = ___SMMLS(cyn_1, filter_y_n1, accu);
         accu = ___SMMLS(cyn_2, filter_y_n2, accu);
         int output = accu << 4;
         filter_x_n2 = filter_x_n1;
-        filter_x_n1 = input;
+        filter_x_n1 = in;
         filter_y_n2 = filter_y_n1;
         filter_y_n1 = output;
         return __SSAT(output, 28);
@@ -282,6 +281,96 @@ public:
 
 
 
+namespace detail {
+
+class PassThrough final {
+public:
+    PassThrough(int lpCutoff) {}
+
+    inline int process(int v) {
+        return v;
+    }
+};
+
+} // namespace detail
+
+template<typename Filter = detail::PassThrough>
+class Gain final {
+public:
+    Gain(int lpCutoff = MINUS_ONE) : filter(lpCutoff) {}
+
+    inline void process(const int32buffer in, int32buffer out, int gain) {
+        for (int i = 0; i < BUFSIZE; ++i) {
+            out[i] = __SSAT(___SMMUL(in[i] << 3, filter.process(gain) << 2), 28);
+        }
+    }
+
+private:
+    Filter filter;
+};
+
+template<typename Filter = detail::PassThrough>
+class StereoGain final {
+public:
+    StereoGain(int lpCutoff = MINUS_ONE) : filter(lpCutoff) {}
+
+    inline void process(const int32buffer in0, const int32buffer in1, int32buffer out0, int32buffer out1, int gain) {
+        for (int i = 0; i < BUFSIZE; ++i) {
+            int g = filter.process(gain) << 2;
+            out0[i] = __SSAT(___SMMUL(in0[i] << 3, g), 28);
+            out1[i] = __SSAT(___SMMUL(in1[i] << 3, g), 28);
+        }
+    }
+
+private:
+    Filter filter;
+};
+
+template<typename Filter = detail::PassThrough>
+class ZeroCrossingGain final {
+public:
+    ZeroCrossingGain(int lpCutoff = MINUS_ONE) : filter(lpCutoff) {}
+
+    inline void process(const int32buffer in, int32buffer out, int gain) {
+        for (int i = 0; i < BUFSIZE; ++i) {
+            if (in[i] > 0 != this->in > 0) 
+                this->gain = gain;
+            this->in = in[i];
+            out[i] = __SSAT(___SMMUL(in[i] << 3, filter.process(gain) << 2), 28);
+        }
+    }
+
+private:
+    Filter filter;
+    int in = 0;
+    int gain = 0;
+};
+
+template<typename Filter = detail::PassThrough>
+class LinearGain final {
+public:
+    LinearGain(int lpCutoff = MINUS_ONE) : filter(lpCutoff) {}
+
+    inline void process(const int32buffer in, int32buffer out, int gain) {
+        gain = filter.process(gain);
+        int step = (gain - prev) >> BUFSIZEPOW;
+        int curr = gain;
+        prev = gain;
+        for (int i = 0; i < BUFSIZE; ++i) {
+            out[i] = __SSAT(___SMMUL(in[i] << 3, curr << 2), 28);
+            curr += step;
+        }
+    }
+
+private:
+    Filter filter;
+    int curr = 0;
+    int prev = 0;
+    int step = 0;
+};
+
+
+
 class EnvelopeFollower final {	
 public:
     EnvelopeFollower(int attack = 0, int release = 0) {
@@ -300,18 +389,18 @@ public:
         }
     }
 
-    int process(int attack, int release, const int32buffer input0, const int32buffer input1) {
+    int process(int attack, int release, const int32buffer in0, const int32buffer in1) {
         update(attack, release);
-        return process(input0, input1);
+        return process(in0, in1);
     }
 
-    int process(const int32buffer input0, const int32buffer input1) {
+    int process(const int32buffer in0, const int32buffer in1) {
         int level = 0;
         for (int i = 0; i < BUFSIZE; ++i) {
             int s;
-            s = input0[i] >> (BUFSIZEPOW + 1);
+            s = in0[i] >> (BUFSIZEPOW + 1);
             level += s > 0 ? s : -s;
-            s = input1[i] >> (BUFSIZEPOW + 1);
+            s = in1[i] >> (BUFSIZEPOW + 1);
             level += s > 0 ? s : -s;
         }
 
@@ -350,7 +439,7 @@ private:
     int a = 0;
     int r = 0;
 
-    SVFLP lp { ONE >> 1, 0 };
+    SVFLP lp { ONE - (ONE >> 2), 0 };
 
     int env = 0;
     int envFiltered = 0;
@@ -364,13 +453,13 @@ public:
     EnvelopeFollowerSimple() {
     }
 
-    int process(const int32buffer input0, const int32buffer input1) {
+    int process(const int32buffer in0, const int32buffer in1) {
         int level = 0;
         for (int i = 0; i < BUFSIZE; ++i) {
             int s;
-            s = input0[i] >> 1;
+            s = in0[i] >> 1;
             level += s > 0 ? s : -s;
-            s = input1[i] >> 1;
+            s = in1[i] >> 1;
             level += s > 0 ? s : -s;
         }
         envelope -= envelope >> slope;

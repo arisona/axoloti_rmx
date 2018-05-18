@@ -7,11 +7,11 @@
       <params/>
       <attribs/>
    </obj>
-   <obj type="rmx/gate" uuid="ae6ac73e-54af-4864-afc8-c8d798e4bfc5" name="gate_dry" x="294" y="14">
+   <obj type="rmx/gate" uuid="ae6ac73e-54af-4864-afc8-c8d798e4bfc5" name="dry_gate" x="294" y="14">
       <params/>
       <attribs/>
    </obj>
-   <obj type="rmx/gate" uuid="ae6ac73e-54af-4864-afc8-c8d798e4bfc5" name="gate_wet" x="420" y="14">
+   <obj type="rmx/gate" uuid="ae6ac73e-54af-4864-afc8-c8d798e4bfc5" name="wet_gate" x="420" y="14">
       <params/>
       <attribs/>
    </obj>
@@ -81,7 +81,7 @@
    </obj>
    <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="env attack" x="14" y="392">
       <params>
-         <frac32.u.map name="value" value="8.0"/>
+         <frac32.u.map name="value" value="0.0"/>
       </params>
       <attribs/>
    </obj>
@@ -129,7 +129,7 @@
    </obj>
    <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="env release" x="14" y="490">
       <params>
-         <frac32.u.map name="value" value="27.5"/>
+         <frac32.u.map name="value" value="32.0"/>
       </params>
       <attribs/>
    </obj>
@@ -141,7 +141,7 @@
    </obj>
    <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d time mod" x="238" y="490">
       <params>
-         <frac32.u.map name="value" MidiCC="41" value="0.0"/>
+         <frac32.u.map name="value" MidiCC="41" value="16.5"/>
       </params>
       <attribs/>
    </obj>
@@ -290,15 +290,15 @@
          <source obj="input" outlet="right"/>
          <dest obj="vu right" inlet="1"/>
          <dest obj="env_follower_1" inlet="r"/>
-         <dest obj="gate_wet" inlet="r"/>
-         <dest obj="gate_dry" inlet="r"/>
+         <dest obj="dry_gate" inlet="r"/>
+         <dest obj="wet_gate" inlet="r"/>
       </net>
       <net>
          <source obj="input" outlet="left"/>
          <dest obj="vu left" inlet="1"/>
          <dest obj="env_follower_1" inlet="l"/>
-         <dest obj="gate_wet" inlet="l"/>
-         <dest obj="gate_dry" inlet="l"/>
+         <dest obj="dry_gate" inlet="l"/>
+         <dest obj="wet_gate" inlet="l"/>
       </net>
       <net>
          <source obj="dry mix" outlet="out"/>
@@ -402,9 +402,9 @@
          <source obj="env_follower_1" outlet="env"/>
          <dest obj="kscope_1" inlet="in"/>
          <dest obj="space_delay_1" inlet="env"/>
-         <dest obj="gate_wet" inlet="env"/>
+         <dest obj="dry_gate" inlet="env"/>
+         <dest obj="wet_gate" inlet="env"/>
          <dest obj="duck_1" inlet="env"/>
-         <dest obj="gate_dry" inlet="env"/>
       </net>
       <net>
          <source obj="env attack" outlet="out"/>
@@ -439,19 +439,19 @@
          <dest obj="duck_1" inlet="r"/>
       </net>
       <net>
-         <source obj="gate_dry" outlet="l"/>
+         <source obj="dry_gate" outlet="l"/>
          <dest obj="mix3_stereo_1" inlet="l0"/>
       </net>
       <net>
-         <source obj="gate_dry" outlet="r"/>
+         <source obj="dry_gate" outlet="r"/>
          <dest obj="mix3_stereo_1" inlet="r0"/>
       </net>
       <net>
-         <source obj="gate_wet" outlet="l"/>
+         <source obj="wet_gate" outlet="l"/>
          <dest obj="gain_stereo_1" inlet="l"/>
       </net>
       <net>
-         <source obj="gate_wet" outlet="r"/>
+         <source obj="wet_gate" outlet="r"/>
          <dest obj="gain_stereo_1" inlet="r"/>
       </net>
       <net>
@@ -469,6 +469,10 @@
       <net>
          <source obj="gain_stereo_1" outlet="r"/>
          <dest obj="reverb_1" inlet="r"/>
+      </net>
+      <net>
+         <source obj="unused_1_8" outlet="out"/>
+         <dest obj="duck_1" inlet="amount"/>
       </net>
    </nets>
    <settings>
