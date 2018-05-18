@@ -13,7 +13,7 @@
       <params/>
       <attribs/>
       <includes>
-         <include>./code/rmx_dsp_lib.hpp</include>
+         <include>./code/rmx_axo_midi.hpp</include>
       </includes>
       <code.declaration><![CDATA[rmx::MidiClock clock;]]></code.declaration>
       <code.krate><![CDATA[int bdur = clock.process();

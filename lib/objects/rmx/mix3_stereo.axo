@@ -23,7 +23,7 @@
       <params/>
       <attribs/>
       <includes>
-         <include>./code/rmx_dsp_lib.hpp</include>
+         <include>./code/rmx_axo_base.hpp</include>
       </includes>
       <code.srate><![CDATA[int32_t accum;
 

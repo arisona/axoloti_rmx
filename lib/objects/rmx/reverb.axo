@@ -21,7 +21,7 @@ http://mutable-instruments.com</sDescription>
       <params/>
       <attribs/>
       <includes>
-         <include>./code/rmx_dsp_lib.hpp</include>
+         <include>./code/rmx_axo_base.hpp</include>
       </includes>
       <code.declaration><![CDATA[elements::Reverb reverb;]]></code.declaration>
       <code.init><![CDATA[uint16_t* buf = (uint16_t*) sdram_malloc(32768);
@@ -31,11 +31,11 @@ reverb.Init(buf);]]></code.init>
       <code.krate><![CDATA[static float left[BUFSIZE];
 static float right[BUFSIZE];
 
-reverb.set_amount(rmx::clamp(0.0f, 1.0f, q27_to_float(inlet_amount)) * 0.5f);
+reverb.set_amount(rmx::clamp(q27_to_float(inlet_amount), 0.0f, 1.0f) * 0.5f);
 reverb.set_input_gain(1.0f);
-reverb.set_time(rmx::clamp(0.0f, 1.0f, q27_to_float(inlet_time)) * 0.8f + 0.1f);
-reverb.set_diffusion(rmx::clamp(0.0f, 1.0f, q27_to_float(inlet_diffusion)) * 0.5f + 0.5f);
-reverb.set_lp(1.0f - rmx::clamp(0.0f, 1.0f, q27_to_float(inlet_lowpass)));
+reverb.set_time(rmx::clamp(q27_to_float(inlet_time), 0.0f, 1.0f) * 0.8f + 0.1f);
+reverb.set_diffusion(rmx::clamp(q27_to_float(inlet_diffusion), 0.0f, 1.0f) * 0.5f + 0.5f);
+reverb.set_lp(1.0f - rmx::clamp(q27_to_float(inlet_lowpass), 0.0f, 1.0f));
 
 for (int i = 0; i < BUFSIZE; ++i) {
 	left[i] = q27_to_float(inlet_l[i]);

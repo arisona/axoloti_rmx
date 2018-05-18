@@ -34,7 +34,7 @@
          <spinner name="fadetime" description="Fade speed (higher means slower)" MinValue="1" MaxValue="20" DefaultValue="13"/>
       </attribs>
       <includes>
-         <include>./code/rmx_dsp_lib.hpp</include>
+         <include>./code/rmx_axo_delay.hpp</include>
       </includes>
       <code.declaration><![CDATA[rmx::FadeDelay delay { attr_length, attr_fadetime };]]></code.declaration>
       <code.init><![CDATA[static int32_t _arrayL[attr_length] __attribute__ ((section (".sdram")));

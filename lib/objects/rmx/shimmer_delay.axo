@@ -72,7 +72,7 @@ modulation depth is recalculated for each buffer size for easy chorusing/phasing
          <spinner name="stages" description="Number of delay stages" MinValue="1" MaxValue="16" DefaultValue="2"/>
       </attribs>
       <includes>
-         <include>./code/rmx_dsp_lib.hpp</include>
+         <include>./code/rmx_axo_base.hpp</include>
       </includes>
       <code.declaration><![CDATA[static const uint32_t LENGTHPOW = attr_length;
 static const uint32_t LENGTH = 1 << attr_length;

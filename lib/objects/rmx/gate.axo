@@ -17,7 +17,7 @@
       <params/>
       <attribs/>
       <includes>
-         <include>./code/rmx_dsp_lib.hpp</include>
+         <include>./code/rmx_axo_base.hpp</include>
       </includes>
       <code.declaration><![CDATA[int sign(int x) {
 	return (x > 0) - (x < 0);
