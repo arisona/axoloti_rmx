@@ -70,8 +70,8 @@ public:
 
         // update env modulation (combine with lfo modulation)
         int modOffset = __SSAT(modTime + ___SMMUL(env, ___SMMUL(timeMod, modEnv) >> 8), 28);
-        modHpCutoff = __SSAT(modHpCutoff + ___SMMUL(env << 3, ___SMMUL(hpMod << 3, modEnv << 2) << 3), 28);
-        modLpCutoff = __SSAT(modLpCutoff + ___SMMUL(env << 3, ___SMMUL(lpMod << 3, modEnv << 2) << 3), 28);
+        modHpCutoff = __SSAT(modHpCutoff + ___SMMUL(env << 4, ___SMMUL(hpMod << 3, modEnv << 2) << 3), 28);
+        modLpCutoff = __SSAT(modLpCutoff + ___SMMUL(env << 4, ___SMMUL(lpMod << 3, modEnv << 2) << 3), 28);
 
         // update filters
         int cutoff;

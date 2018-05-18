@@ -130,7 +130,9 @@ protected:
 
 class BiquadLP final : public detail::BiquadBase {
 public:
-    BiquadLP() {}
+    BiquadLP(int cutoff = 0, int reso = 0) {
+        setup(cutoff, reso);
+    }
 
     void setup(int cutoff, int reso) {
         int cosW0;
@@ -150,7 +152,9 @@ public:
 
 class BiquadBP final : public detail::BiquadBase {
 public:
-    BiquadBP() {}
+    BiquadBP(int cutoff = 0, int reso = 0) {
+        setup(cutoff, reso);
+    }
 
     void setup(int cutoff, int reso) {
         int cosW0;
@@ -170,7 +174,9 @@ public:
 
 class BiquadHP final : public detail::BiquadBase {
 public:
-    BiquadHP() {}
+    BiquadHP(int cutoff = 0, int reso = 0) {
+        setup(cutoff, reso);
+    }
 
     void setup(int cutoff, int reso) {
         int cosW0;
@@ -196,7 +202,9 @@ class SVFBase {
     // from Axoloti SVF
     // in addition, see: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=92
 public:
-    SVFBase() {}
+    SVFBase(int cutoff, int reso) {
+        setup(cutoff, reso);
+    }
 
     void setup(int cutoff, int reso) {
         int alpha = 0;
@@ -226,7 +234,7 @@ protected:
 
 class SVFLP final : public detail::SVFBase {
 public:
-    SVFLP() {}
+    SVFLP(int cutoff = 0, int reso = 0) : SVFBase(cutoff, reso) {}
 
     inline int process(int sample) {
         processInternal(sample);
@@ -242,7 +250,7 @@ public:
 
 class SVFBP final : public detail::SVFBase {
 public:
-    SVFBP() {}
+    SVFBP(int cutoff = 0, int reso = 0) : SVFBase(cutoff, reso) {}
 
     inline int process(int sample) {
         processInternal(sample);
@@ -258,7 +266,7 @@ public:
 
 class SVFHP final : public detail::SVFBase {
 public:
-    SVFHP() {}
+    SVFHP(int cutoff = 0, int reso = 0) : SVFBase(cutoff, reso) {}
 
     inline int process(int sample) {
         processInternal(sample);
@@ -312,11 +320,11 @@ public:
         } else if (level < env) {
             env = ___SMMUL(r << 2, env - level << 3) + level;
         }
-        return __SSAT(env, 28);
+        return __SSAT(lp.process(env), 28);
     }
 
     inline int get() const {
-        return env;
+        return envFiltered;
     }
 
 private:
@@ -341,7 +349,11 @@ private:
 
     int a = 0;
     int r = 0;
+
+    SVFLP lp { ONE >> 1, 0 };
+
     int env = 0;
+    int envFiltered = 0;
 };
 
 
