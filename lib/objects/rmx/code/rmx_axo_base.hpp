@@ -60,6 +60,63 @@ private:
 };
 
 
+
+class LP final {
+public:
+    LP(int cutoff = 0) {
+        update(cutoff);
+    }
+
+    inline void update(int cutoff) {
+        MTOF(cutoff, f);
+    }
+
+    inline int process(int sample) {
+        v = ___SMMLA((sample - v) << 1, f, v);
+        return v;
+    }
+    
+    inline void process(const int32buffer in, int32buffer out) {
+        for (int i = 0; i < BUFSIZE; ++i) {
+            out[i] = process(in[i]);
+        }
+    }
+
+private:
+    int f = 0;
+    int v = 0;
+};
+
+
+
+class HP final {
+public:
+    HP(int cutoff = 0) {
+        update(cutoff);
+    }
+
+    inline void update(int cutoff) {
+        MTOF(cutoff, f);
+    }
+    
+    inline int process(int sample) {
+        v = ___SMMLA((sample - v) << 1, f, v);
+        return sample - v;
+    }
+
+    inline void process(const int32buffer in, int32buffer out) {
+        for (int i = 0; i < BUFSIZE; ++i) {
+            out[i] = process(in[i]);
+        }
+    }
+
+private:
+    int f = 0;
+    int v = 0;
+};
+
+
+
 namespace detail {
 
 class BiquadBase {
@@ -88,7 +145,7 @@ public:
     }
 
 protected:
-    bool doSetup(int cutoff, int reso, int& cosW0, int& alpha, int& a0_inv_q31, int& q_inv) {
+    bool doUpdate(int cutoff, int reso, int& cosW0, int& alpha, int& a0_inv_q31, int& q_inv) {
         if (cutoff == this->cutoff && reso == this->reso)
             return false;
         this->cutoff = cutoff;
@@ -130,15 +187,15 @@ protected:
 class BiquadLP final : public detail::BiquadBase {
 public:
     BiquadLP(int cutoff = 0, int reso = 0) {
-        setup(cutoff, reso);
+        update(cutoff, reso);
     }
 
-    void setup(int cutoff, int reso) {
+    void update(int cutoff, int reso) {
         int cosW0;
         int alpha;
         int a0_inv_q31;
         int q_inv;
-        if (!doSetup(cutoff, reso, cosW0, alpha, a0_inv_q31, q_inv))
+        if (!doUpdate(cutoff, reso, cosW0, alpha, a0_inv_q31, q_inv))
             return;
 
         cyn_1 = ___SMMUL((-cosW0), a0_inv_q31);
@@ -152,15 +209,15 @@ public:
 class BiquadBP final : public detail::BiquadBase {
 public:
     BiquadBP(int cutoff = 0, int reso = 0) {
-        setup(cutoff, reso);
+        update(cutoff, reso);
     }
 
-    void setup(int cutoff, int reso) {
+    void update(int cutoff, int reso) {
         int cosW0;
         int alpha;
         int a0_inv_q31;
         int q_inv;
-        if (!doSetup(cutoff, reso, cosW0, alpha, a0_inv_q31, q_inv))
+        if (!doUpdate(cutoff, reso, cosW0, alpha, a0_inv_q31, q_inv))
             return;
 
         cyn_1 = ___SMMUL((-cosW0), a0_inv_q31);
@@ -174,15 +231,15 @@ public:
 class BiquadHP final : public detail::BiquadBase {
 public:
     BiquadHP(int cutoff = 0, int reso = 0) {
-        setup(cutoff, reso);
+        update(cutoff, reso);
     }
 
-    void setup(int cutoff, int reso) {
+    void update(int cutoff, int reso) {
         int cosW0;
         int alpha;
         int a0_inv_q31;
         int q_inv;
-        if (!doSetup(cutoff, reso, cosW0, alpha, a0_inv_q31, q_inv))
+        if (!doUpdate(cutoff, reso, cosW0, alpha, a0_inv_q31, q_inv))
             return;
 
         cyn_1 = ___SMMUL((-cosW0), a0_inv_q31);
@@ -202,10 +259,10 @@ class SVFBase {
     // in addition, see: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=92
 public:
     SVFBase(int cutoff, int reso) {
-        setup(cutoff, reso);
+        update(cutoff, reso);
     }
 
-    void setup(int cutoff, int reso) {
+    void update(int cutoff, int reso) {
         int alpha = 0;
         MTOFEXTENDED(cutoff, alpha);
         SINE2TINTERP(alpha, freq);		
@@ -285,7 +342,7 @@ namespace detail {
 
 class PassThrough final {
 public:
-    PassThrough(int lpCutoff) {}
+    PassThrough(int lpCutoff = 0) {}
 
     inline int process(int v) {
         return v;
@@ -439,7 +496,7 @@ private:
     int a = 0;
     int r = 0;
 
-    SVFLP lp { ONE - (ONE >> 2), 0 };
+    LP lp { ONE - (ONE >> 2) };
 
     int env = 0;
     int envFiltered = 0;

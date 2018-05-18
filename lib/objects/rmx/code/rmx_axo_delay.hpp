@@ -76,12 +76,12 @@ public:
         // update filters
         int cutoff;
         cutoff = __SSAT(hpCutoff + modHpCutoff, 28);
-        hpL.setup(cutoff, hpReso);
-        hpR.setup(cutoff, hpReso);
+        hpL.update(cutoff, hpReso);
+        hpR.update(cutoff, hpReso);
 
         cutoff = __SSAT(lpCutoff - modLpCutoff, 28);
-        lpL.setup(cutoff, lpReso);
-        lpR.setup(cutoff, lpReso);
+        lpL.update(cutoff, lpReso);
+        lpR.update(cutoff, lpReso);
 
         // update time / read offsets
         if (!isFading && (time != this->time || offset != this->offset || bdur != this->bdur)) {
