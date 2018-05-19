@@ -11,6 +11,7 @@
 #pragma once
 
 #include "rmx_axo_base.hpp"
+#include "rmx_axo_filter.hpp"
 
 namespace rmx {
 

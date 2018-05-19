@@ -18,7 +18,7 @@ Times are mapped expontentially from 0 to ~8s, with a value of 32 corresponding 
       <params/>
       <attribs/>
       <includes>
-         <include>./code/rmx_axo_base.hpp</include>
+         <include>./code/rmx_axo_envelope.hpp</include>
       </includes>
       <code.declaration><![CDATA[rmx::EnvelopeFollower follower;]]></code.declaration>
       <code.krate><![CDATA[outlet_env = follower.process(inlet_attack, inlet_release, inlet_l, inlet_r);]]></code.krate>

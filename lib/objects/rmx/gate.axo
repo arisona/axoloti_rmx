@@ -17,7 +17,7 @@
       <params/>
       <attribs/>
       <includes>
-         <include>./code/rmx_axo_base.hpp</include>
+         <include>./code/rmx_axo_gain.hpp</include>
       </includes>
       <code.declaration><![CDATA[rmx::StereoGain<rmx::LP> gain;]]></code.declaration>
       <code.krate><![CDATA[gain.process(inlet_l, inlet_r, outlet_l, outlet_r, inlet_env >= inlet_thres ? rmx::ONE : 0);]]></code.krate>

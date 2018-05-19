@@ -17,7 +17,7 @@
       <params/>
       <attribs/>
       <includes>
-         <include>./code/rmx_axo_base.hpp</include>
+         <include>./code/rmx_axo_gain.hpp</include>
       </includes>
       <code.declaration><![CDATA[rmx::StereoGain<rmx::LP> gain;]]></code.declaration>
       <code.krate><![CDATA[int duck = rmx::clamp((1 << 27) - (___SMMUL(inlet_env << 3, inlet_amount << 2) << 2), 0, rmx::ONE);
