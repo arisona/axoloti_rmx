@@ -79,37 +79,37 @@
       <params/>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="env attack" x="14" y="392">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="env release" x="14" y="392">
       <params>
-         <frac32.u.map name="value" value="10.0"/>
+         <frac32.u.map name="value" value="32.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="r lp" x="126" y="392">
-      <params>
-         <frac32.u.map name="value" MidiCC="54" value="0.0"/>
-      </params>
-      <attribs/>
-   </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d sync mode" x="238" y="392">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="lfo rate" x="126" y="392">
       <params>
          <frac32.u.map name="value" value="0.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial b" uuid="862e7d7f29093cb1ce4aed72244d118ad4d46692" name="d mod rate" x="350" y="392">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="r lp" x="238" y="392">
       <params>
-         <frac32.s.map name="value" MidiCC="56" value="-64.0"/>
+         <frac32.u.map name="value" MidiCC="54" value="0.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d mod env" x="462" y="392">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d time mod" x="350" y="392">
       <params>
-         <frac32.u.map name="value" MidiCC="57" value="0.0"/>
+         <frac32.u.map name="value" MidiCC="41" value="0.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="unused_1_5" x="574" y="392">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d hp drive" x="462" y="392">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d lp drive" x="574" y="392">
       <params>
          <frac32.u.map name="value" value="0.0"/>
       </params>
@@ -127,45 +127,45 @@
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="env release" x="14" y="490">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="env attack" x="14" y="490">
       <params>
-         <frac32.u.map name="value" value="32.0"/>
+         <frac32.u.map name="value" value="10.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="r diff" x="126" y="490">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="lfo shape" x="126" y="490">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="r diff" x="238" y="490">
       <params>
          <frac32.u.map name="value" MidiCC="40" value="0.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d time mod" x="238" y="490">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d offset" x="350" y="490">
       <params>
-         <frac32.u.map name="value" MidiCC="41" value="0.0"/>
+         <frac32.u.map name="value" MidiCC="25" value="0.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d hp mod" x="350" y="490">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d hp mod" x="462" y="490">
       <params>
          <frac32.u.map name="value" MidiCC="42" value="0.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d lp mod" x="462" y="490">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d lp mod" x="574" y="490">
       <params>
          <frac32.u.map name="value" MidiCC="43" value="0.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="unused_2_5" x="574" y="490">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d pingpong" x="686" y="490">
       <params>
-         <frac32.u.map name="value" value="0.0"/>
-      </params>
-      <attribs/>
-   </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="unused_2_7" x="686" y="490">
-      <params>
-         <frac32.u.map name="value" value="0.0"/>
+         <frac32.u.map name="value" MidiCC="28" value="0.0"/>
       </params>
       <attribs/>
    </obj>
@@ -175,45 +175,45 @@
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="lfo rate" x="14" y="588">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="env amount" x="14" y="588">
+      <params>
+         <frac32.u.map name="value" MidiCC="57" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="dry gate" x="126" y="588">
       <params>
          <frac32.u.map name="value" value="0.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="r time" x="126" y="588">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="r time" x="238" y="588">
       <params>
          <frac32.u.map name="value" MidiCC="24" value="0.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d offset" x="238" y="588">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d time" x="350" y="588">
       <params>
-         <frac32.u.map name="value" MidiCC="25" value="0.0"/>
+         <frac32.u.map name="value" MidiCC="10" value="0.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d hp reso" x="350" y="588">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d hp reso" x="462" y="588">
       <params>
          <frac32.u.map name="value" MidiCC="26" value="0.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d lp reso" x="462" y="588">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d lp reso" x="574" y="588">
       <params>
          <frac32.u.map name="value" MidiCC="27" value="0.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d pingpong" x="574" y="588">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d feedback" x="686" y="588">
       <params>
-         <frac32.u.map name="value" MidiCC="28" value="0.0"/>
-      </params>
-      <attribs/>
-   </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="unused_3_7" x="686" y="588">
-      <params>
-         <frac32.u.map name="value" value="0.0"/>
+         <frac32.u.map name="value" MidiCC="14" value="0.0"/>
       </params>
       <attribs/>
    </obj>
@@ -231,39 +231,39 @@
       <params/>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="input gain" x="14" y="686">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="wet gain" x="14" y="686">
       <params>
          <frac32.u.map name="value" MidiCC="8" value="64.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="r amount" x="126" y="686">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="wet gate" x="126" y="686">
+      <params>
+         <frac32.u.map name="value" value="0.0"/>
+      </params>
+      <attribs/>
+   </obj>
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="r amount" x="238" y="686">
       <params>
          <frac32.u.map name="value" MidiCC="9" value="0.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d time" x="238" y="686">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="unused_4_4" x="350" y="686">
       <params>
-         <frac32.u.map name="value" MidiCC="10" value="0.0"/>
+         <frac32.u.map name="value" value="0.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial b" uuid="862e7d7f29093cb1ce4aed72244d118ad4d46692" name="d hp cutoff" x="350" y="686">
+   <obj type="ctrl/dial b" uuid="862e7d7f29093cb1ce4aed72244d118ad4d46692" name="d hp cutoff" x="462" y="686">
       <params>
          <frac32.s.map name="value" MidiCC="12" value="-64.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial b" uuid="862e7d7f29093cb1ce4aed72244d118ad4d46692" name="d lp cutoff" x="462" y="686">
+   <obj type="ctrl/dial b" uuid="862e7d7f29093cb1ce4aed72244d118ad4d46692" name="d lp cutoff" x="574" y="686">
       <params>
          <frac32.s.map name="value" MidiCC="13" value="-64.0"/>
-      </params>
-      <attribs/>
-   </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d feedback" x="574" y="686">
-      <params>
-         <frac32.u.map name="value" MidiCC="14" value="0.0"/>
       </params>
       <attribs/>
    </obj>
@@ -281,7 +281,7 @@
    </obj>
    <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="dry mix" x="910" y="686">
       <params>
-         <frac32.u.map name="value" MidiCC="7" value="32.0"/>
+         <frac32.u.map name="value" MidiCC="7" value="0.0"/>
       </params>
       <attribs/>
    </obj>
@@ -349,15 +349,11 @@
          <dest obj="space_delay_1" inlet="lpReso"/>
       </net>
       <net>
-         <source obj="d mod env" outlet="out"/>
+         <source obj="env amount" outlet="out"/>
          <dest obj="space_delay_1" inlet="modEnv"/>
       </net>
       <net>
-         <source obj="d mod rate" outlet="out"/>
-         <dest obj="space_delay_1" inlet="modRate"/>
-      </net>
-      <net>
-         <source obj="input gain" outlet="out"/>
+         <source obj="wet gain" outlet="out"/>
          <dest obj="gain_stereo_1" inlet="gain"/>
       </net>
       <net>
@@ -401,10 +397,10 @@
       <net>
          <source obj="env_follower_1" outlet="env"/>
          <dest obj="kscope_1" inlet="in"/>
-         <dest obj="space_delay_1" inlet="env"/>
          <dest obj="duck_1" inlet="env"/>
          <dest obj="gate_dry" inlet="env"/>
          <dest obj="gate_wet" inlet="env"/>
+         <dest obj="space_delay_1" inlet="env"/>
       </net>
       <net>
          <source obj="env attack" outlet="out"/>
@@ -473,6 +469,26 @@
       <net>
          <source obj="unused_1_8" outlet="out"/>
          <dest obj="duck_1" inlet="amount"/>
+      </net>
+      <net>
+         <source obj="d lp drive" outlet="out"/>
+         <dest obj="space_delay_1" inlet="lpDrive"/>
+      </net>
+      <net>
+         <source obj="d hp drive" outlet="out"/>
+         <dest obj="space_delay_1" inlet="hpDrive"/>
+      </net>
+      <net>
+         <source obj="lfo rate" outlet="out"/>
+         <dest obj="space_delay_1" inlet="modRate"/>
+      </net>
+      <net>
+         <source obj="dry gate" outlet="out"/>
+         <dest obj="gate_dry" inlet="thres"/>
+      </net>
+      <net>
+         <source obj="wet gate" outlet="out"/>
+         <dest obj="gate_wet" inlet="thres"/>
       </net>
    </nets>
    <settings>

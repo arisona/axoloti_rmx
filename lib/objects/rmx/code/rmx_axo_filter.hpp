@@ -226,8 +226,9 @@ public:
 namespace detail {
 
 class SVFBase {
-    // from Axoloti SVF
+    // from Axoloti SVF, but with 2x oversampling
     // in addition, see: http://www.musicdsp.org/showArchiveComment.php?ArchiveID=92
+    // note that drive implementation a bit esotheric...
 public:
     SVFBase(int cutoff, int reso) {
         update(cutoff, reso);
@@ -240,6 +241,9 @@ public:
 
         // slightly less resonance if reso = 0 compared to orignal implementation
         damp = INT_MAX - (reso << 3) - (reso << 2);
+
+        // adjust drive (less drive for high frequencies)
+        this->drive = (drive << 4) >> (freq >> 28);
     }
 
 protected:
@@ -247,11 +251,16 @@ protected:
         int notch = sample - (___SMMUL(damp, band) << 1);
         low = low + (___SMMUL(freq, band) << 1);
         high = notch - low;
-        band = (___SMMUL(freq, high) << 1) + band;
+
+        int db3 = ___SMMUL(band, band) << 5;
+        db3 = ___SMMUL(db3, band) << 5;
+        db3 = ___SMMUL(db3, drive) << 5;
+        band = (___SMMUL(freq, high) << 1) + band - db3;
     }
 
     int freq = 0;
     int damp = 0;
+    int drive = 0;
 
     int low = 0;
     int high = 0;
@@ -266,7 +275,10 @@ public:
 
     inline int process(int sample) {
         processInternal(sample);
-        return low;
+        int low0 = low >> 1;
+        processInternal(sample);
+        int low1 = low >> 1;
+        return __SSAT(low0 + low1, 28);
     }
 
     inline void process(const int32buffer in, int32buffer out) {
@@ -282,7 +294,10 @@ public:
 
     inline int process(int sample) {
         processInternal(sample);
-        return band;
+        int band0 = band >> 1;
+        processInternal(sample);
+        int band1 = band >> 1;
+        return __SSAT(band0 + band1, 28);
     }
 
     inline void process(const int32buffer in, int32buffer out) {
@@ -298,7 +313,10 @@ public:
 
     inline int process(int sample) {
         processInternal(sample);
-        return high;
+        int high0 = high >> 1;
+        processInternal(sample);
+        int high1 = high >> 1;
+        return __SSAT(high0 + high1, 28);
     }
 
     inline void process(const int32buffer in, int32buffer out) {

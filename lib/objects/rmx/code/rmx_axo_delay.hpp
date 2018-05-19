@@ -35,8 +35,8 @@ public:
                  int32buffer outBufL, int32buffer outBufR,
                  const int time, const int offset, const int timeMod,
                  const int feedback, const int pingpong,
-                 const int hpCutoff, const int hpReso, const int hpMod,
-                 const int lpCutoff, const int lpReso, const int lpMod,
+                 const int hpCutoff, const int hpReso, const int hpDrive, const int hpMod,
+                 const int lpCutoff, const int lpReso, const int lpDrive, const int lpMod,
                  const int modRate, const int modEnv,
                  const int bdur, const int env) {
 
@@ -77,12 +77,12 @@ public:
         // update filters
         int cutoff;
         cutoff = __SSAT(hpCutoff + modHpCutoff, 28);
-        hpL.update(cutoff, hpReso);
-        hpR.update(cutoff, hpReso);
+        hpL.update(cutoff, hpReso, hpDrive);
+        hpR.update(cutoff, hpReso, hpDrive);
 
         cutoff = __SSAT(lpCutoff - modLpCutoff, 28);
-        lpL.update(cutoff, lpReso);
-        lpR.update(cutoff, lpReso);
+        lpL.update(cutoff, lpReso, lpDrive);
+        lpR.update(cutoff, lpReso, lpDrive);
 
         // update time / read offsets
         if (!isFading && (time != this->time || offset != this->offset || bdur != this->bdur)) {
