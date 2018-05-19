@@ -14,9 +14,16 @@
 
 namespace rmx {
 
+// the filters all have the same api (cutoff, reso, drive), also when
+// reso and drive are ignored for some types. this way, they can be
+// used as templates in an uniform manner.
+
 class PassThrough final {
 public:
-    PassThrough(int cutoff = 0, int reso = 0) {}
+    PassThrough(int cutoff = 0, int reso = 0, int drive = 0) {}
+
+    inline void update(int cutoff, int reso = 0, int drive = 0) {
+    }
 
     inline int process(int v) {
         return v;
@@ -27,11 +34,11 @@ public:
 
 class LP final {
 public:
-    LP(int cutoff = 0) {
+    LP(int cutoff = 0, int reso = 0, int drive = 0) {
         update(cutoff);
     }
 
-    inline void update(int cutoff) {
+    inline void update(int cutoff, int reso = 0, int drive = 0) {
         MTOF(cutoff, f);
     }
 
@@ -55,11 +62,11 @@ private:
 
 class HP final {
 public:
-    HP(int cutoff = 0) {
+    HP(int cutoff = 0, int reso = 0, int drive = 0) {
         update(cutoff);
     }
 
-    inline void update(int cutoff) {
+    inline void update(int cutoff, int reso = 0, int drive = 0) {
         MTOF(cutoff, f);
     }
     
@@ -94,15 +101,15 @@ public:
         }
     }
 
-    inline int process(int in) {
-        int accu = ___SMMUL(cxn_0, in);
+    inline int process(int sample) {
+        int accu = ___SMMUL(cxn_0, sample);
         accu = ___SMMLA(cxn_1, filter_x_n1, accu);
         accu = ___SMMLA(cxn_2, filter_x_n2, accu);
         accu = ___SMMLS(cyn_1, filter_y_n1, accu);
         accu = ___SMMLS(cyn_2, filter_y_n2, accu);
         int output = accu << 4;
         filter_x_n2 = filter_x_n1;
-        filter_x_n1 = in;
+        filter_x_n1 = sample;
         filter_y_n2 = filter_y_n1;
         filter_y_n1 = output;
         return __SSAT(output, 28);
@@ -154,7 +161,7 @@ public:
         update(cutoff, reso);
     }
 
-    void update(int cutoff, int reso) {
+    void update(int cutoff, int reso = 0, int drive = 0) {
         int cosW0;
         int alpha;
         int a0_inv_q31;
@@ -172,11 +179,11 @@ public:
 
 class BiquadBP final : public detail::BiquadBase {
 public:
-    BiquadBP(int cutoff = 0, int reso = 0) {
+    BiquadBP(int cutoff = 0, int reso = 0, int drive = 0) {
         update(cutoff, reso);
     }
 
-    void update(int cutoff, int reso) {
+    void update(int cutoff, int reso = 0, int drive = 0) {
         int cosW0;
         int alpha;
         int a0_inv_q31;
@@ -194,11 +201,11 @@ public:
 
 class BiquadHP final : public detail::BiquadBase {
 public:
-    BiquadHP(int cutoff = 0, int reso = 0) {
+    BiquadHP(int cutoff = 0, int reso = 0, int drive = 0) {
         update(cutoff, reso);
     }
 
-    void update(int cutoff, int reso) {
+    void update(int cutoff, int reso = 0, int drive = 0) {
         int cosW0;
         int alpha;
         int a0_inv_q31;
@@ -226,7 +233,7 @@ public:
         update(cutoff, reso);
     }
 
-    void update(int cutoff, int reso) {
+    void update(int cutoff, int reso = 0, int drive = 0) {
         int alpha = 0;
         MTOFEXTENDED(cutoff, alpha);
         SINE2TINTERP(alpha, freq);		
@@ -255,7 +262,7 @@ protected:
 
 class SVFLP final : public detail::SVFBase {
 public:
-    SVFLP(int cutoff = 0, int reso = 0) : SVFBase(cutoff, reso) {}
+    SVFLP(int cutoff = 0, int reso = 0, int drive = 0) : SVFBase(cutoff, reso) {}
 
     inline int process(int sample) {
         processInternal(sample);
@@ -271,7 +278,7 @@ public:
 
 class SVFBP final : public detail::SVFBase {
 public:
-    SVFBP(int cutoff = 0, int reso = 0) : SVFBase(cutoff, reso) {}
+    SVFBP(int cutoff = 0, int reso = 0, int drive = 0) : SVFBase(cutoff, reso) {}
 
     inline int process(int sample) {
         processInternal(sample);
@@ -287,7 +294,7 @@ public:
 
 class SVFHP final : public detail::SVFBase {
 public:
-    SVFHP(int cutoff = 0, int reso = 0) : SVFBase(cutoff, reso) {}
+    SVFHP(int cutoff = 0, int reso = 0, int drive = 0) : SVFBase(cutoff, reso) {}
 
     inline int process(int sample) {
         processInternal(sample);
