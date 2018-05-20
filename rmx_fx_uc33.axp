@@ -3,34 +3,38 @@
       <params/>
       <attribs/>
    </obj>
-   <obj type="rmx/env_follower" uuid="f83be1e0-df96-4180-a110-edda7ef47383" name="env_follower_1" x="140" y="14">
+   <obj type="rmx/env_follower" uuid="f83be1e0-df96-4180-a110-edda7ef47383" name="env_follower_1" x="126" y="14">
       <params/>
       <attribs/>
    </obj>
-   <obj type="rmx/gate" uuid="ae6ac73e-54af-4864-afc8-c8d798e4bfc5" name="gate_dry" x="294" y="14">
+   <obj type="rmx/gate" uuid="ae6ac73e-54af-4864-afc8-c8d798e4bfc5" name="gate_dry" x="252" y="14">
       <params/>
       <attribs/>
    </obj>
-   <obj type="rmx/gate" uuid="ae6ac73e-54af-4864-afc8-c8d798e4bfc5" name="gate_wet" x="420" y="14">
+   <obj type="rmx/gate" uuid="ae6ac73e-54af-4864-afc8-c8d798e4bfc5" name="gate_wet" x="364" y="14">
       <params/>
       <attribs/>
    </obj>
-   <obj type="rmx/gain_stereo" uuid="6efeb957-6eab-4c84-abcc-6f3191bc8652" name="gain_stereo_1" x="546" y="14">
+   <obj type="rmx/gain_stereo" uuid="6efeb957-6eab-4c84-abcc-6f3191bc8652" name="gain_stereo_1" x="476" y="14">
       <params/>
       <attribs/>
    </obj>
-   <obj type="rmx/reverb" uuid="b1ecfd2f-3b0e-4fb2-8375-64770ef075ff" name="reverb_1" x="686" y="14">
+   <obj type="rmx/reverb" uuid="b1ecfd2f-3b0e-4fb2-8375-64770ef075ff" name="reverb_1" x="602" y="14">
       <params/>
       <attribs/>
    </obj>
-   <obj type="rmx/space_delay" uuid="02c0fd21-6052-4d71-8c52-8e79e42326bd" name="space_delay_1" x="826" y="14">
+   <obj type="rmx/space_delay" uuid="02c0fd21-6052-4d71-8c52-8e79e42326bd" name="space_delay_1" x="728" y="14">
       <params/>
       <attribs>
          <spinner attributeName="length" value="96000"/>
          <spinner attributeName="fadetime" value="13"/>
       </attribs>
    </obj>
-   <obj type="rmx/duck" uuid="20ad21e0-1654-44c9-b25c-52d2a8be26cb" name="duck_1" x="994" y="14">
+   <obj type="rmx/duck" uuid="20ad21e0-1654-44c9-b25c-52d2a8be26cb" name="duck_1" x="882" y="14">
+      <params/>
+      <attribs/>
+   </obj>
+   <obj type="rmx/auto_pan" uuid="35187fc8-200a-4e7b-8c5b-d1a13e375307" name="auto_pan_1" x="1008" y="14">
       <params/>
       <attribs/>
    </obj>
@@ -38,7 +42,7 @@
       <params/>
       <attribs/>
    </obj>
-   <obj type="audio/out stereo" uuid="a1ca7a567f535acc21055669829101d3ee7f0189" name="output" x="1274" y="14">
+   <obj type="audio/out stereo" uuid="a1ca7a567f535acc21055669829101d3ee7f0189" name="output" x="1260" y="14">
       <params/>
       <attribs/>
    </obj>
@@ -169,7 +173,7 @@
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="unused_2_8" x="798" y="490">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="duck amount" x="798" y="490">
       <params>
          <frac32.u.map name="value" value="0.0"/>
       </params>
@@ -195,7 +199,7 @@
    </obj>
    <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d time" x="350" y="588">
       <params>
-         <frac32.u.map name="value" MidiCC="10" value="0.0"/>
+         <frac32.u.map name="value" MidiCC="10" value="30.5"/>
       </params>
       <attribs/>
    </obj>
@@ -213,21 +217,21 @@
    </obj>
    <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d feedback" x="686" y="588">
       <params>
-         <frac32.u.map name="value" MidiCC="14" value="0.0"/>
+         <frac32.u.map name="value" MidiCC="14" value="29.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="unused_3_8" x="798" y="588">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="pan amount" x="798" y="588">
       <params>
          <frac32.u.map name="value" value="0.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="jaffa/disp/Vu2" uuid="cce77389-d514-4abf-b550-d63c31dc3cd8" name="vu left" x="1190" y="588">
+   <obj type="jaffa/disp/Vu2" uuid="cce77389-d514-4abf-b550-d63c31dc3cd8" name="vu left" x="1148" y="588">
       <params/>
       <attribs/>
    </obj>
-   <obj type="jaffa/disp/Vu2" uuid="cce77389-d514-4abf-b550-d63c31dc3cd8" name="vu right" x="1288" y="588">
+   <obj type="jaffa/disp/Vu2" uuid="cce77389-d514-4abf-b550-d63c31dc3cd8" name="vu right" x="1260" y="588">
       <params/>
       <attribs/>
    </obj>
@@ -239,7 +243,7 @@
    </obj>
    <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="wet gate" x="126" y="686">
       <params>
-         <frac32.u.map name="value" value="0.0"/>
+         <frac32.u.map name="value" value="38.0"/>
       </params>
       <attribs/>
    </obj>
@@ -275,7 +279,7 @@
    </obj>
    <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="wet mix" x="798" y="686">
       <params>
-         <frac32.u.map name="value" MidiCC="16" value="32.0"/>
+         <frac32.u.map name="value" MidiCC="16" value="39.0"/>
       </params>
       <attribs/>
    </obj>
@@ -420,11 +424,11 @@
       </net>
       <net>
          <source obj="duck_1" outlet="l"/>
-         <dest obj="mix3_stereo_1" inlet="l1"/>
+         <dest obj="auto_pan_1" inlet="l"/>
       </net>
       <net>
          <source obj="duck_1" outlet="r"/>
-         <dest obj="mix3_stereo_1" inlet="r1"/>
+         <dest obj="auto_pan_1" inlet="r"/>
       </net>
       <net>
          <source obj="space_delay_1" outlet="l"/>
@@ -467,10 +471,6 @@
          <dest obj="reverb_1" inlet="r"/>
       </net>
       <net>
-         <source obj="unused_1_8" outlet="out"/>
-         <dest obj="duck_1" inlet="amount"/>
-      </net>
-      <net>
          <source obj="d lp drive" outlet="out"/>
          <dest obj="space_delay_1" inlet="lpDrive"/>
       </net>
@@ -481,6 +481,7 @@
       <net>
          <source obj="lfo rate" outlet="out"/>
          <dest obj="space_delay_1" inlet="modRate"/>
+         <dest obj="auto_pan_1" inlet="rate"/>
       </net>
       <net>
          <source obj="dry gate" outlet="out"/>
@@ -489,6 +490,22 @@
       <net>
          <source obj="wet gate" outlet="out"/>
          <dest obj="gate_wet" inlet="thres"/>
+      </net>
+      <net>
+         <source obj="auto_pan_1" outlet="l"/>
+         <dest obj="mix3_stereo_1" inlet="l1"/>
+      </net>
+      <net>
+         <source obj="auto_pan_1" outlet="r"/>
+         <dest obj="mix3_stereo_1" inlet="r1"/>
+      </net>
+      <net>
+         <source obj="pan amount" outlet="out"/>
+         <dest obj="auto_pan_1" inlet="amount"/>
+      </net>
+      <net>
+         <source obj="duck amount" outlet="out"/>
+         <dest obj="duck_1" inlet="amount"/>
       </net>
    </nets>
    <settings>

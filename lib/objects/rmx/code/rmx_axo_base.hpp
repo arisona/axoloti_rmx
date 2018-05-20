@@ -32,6 +32,15 @@ inline int mod(int a, int b) {
     return r < 0 ? r + b : r;
 }
 
+inline int softsat(int x) {
+    // from axoloti dist/soft: y = 1.5*x - 0.5*x^3 for -1 < x < 1; y = -1 for x <= -1; y = 1 for x >= 1
+    int xs = __SSAT(x, 28);
+    int xss_p3 = ___SMMUL(xs << 3, ___SMMUL(xs << 3, xs << 2) << 2) >> 1;
+    return xs + (xs >> 1) - xss_p3;
+}
+
+
+
 template<typename T, int length>
 class MovingAverage final {
 public:

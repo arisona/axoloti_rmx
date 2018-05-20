@@ -1,0 +1,24 @@
+<objdefs appVersion="1.0.12">
+   <obj.normal id="auto_pan" uuid="35187fc8-200a-4e7b-8c5b-d1a13e375307">
+      <author>robot_mixeur</author>
+      <license>GPL</license>
+      <inlets>
+         <frac32buffer name="l" description="Left input"/>
+         <frac32buffer name="r" description="Right input"/>
+         <frac32 name="amount" description="Pan amount"/>
+         <frac32 name="rate" description="Pan rate"/>
+      </inlets>
+      <outlets>
+         <frac32buffer name="l" description="Left output"/>
+         <frac32buffer name="r" description="right output"/>
+      </outlets>
+      <displays/>
+      <params/>
+      <attribs/>
+      <includes>
+         <include>./code/rmx_axo_pan.hpp</include>
+      </includes>
+      <code.declaration><![CDATA[rmx::AutoPan pan;]]></code.declaration>
+      <code.krate><![CDATA[pan.process(inlet_l, inlet_r, outlet_l, outlet_r, inlet_rate, inlet_amount);]]></code.krate>
+   </obj.normal>
+</objdefs>

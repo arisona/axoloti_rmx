@@ -20,6 +20,9 @@ public:
     FadeDelay(int length, int fadeTime) : length(length), step((1 << 27) >> fadeTime)  {
     }
 
+    // temporary use for passing debug values to the gui
+    int debug = 0;
+
     void setup(int32_t* bufferL, int32_t* bufferR) {
         this->bufferL = bufferL;
         this->bufferR = bufferR;
@@ -30,7 +33,6 @@ public:
         }
     }
 
-    int debug = 0;
     void process(const int32buffer inBufL, const int32buffer inBufR,
                  int32buffer outBufL, int32buffer outBufR,
                  const int time, const int offset, const int timeMod,
@@ -183,7 +185,6 @@ private:
             return std::min(TIMES[t], length - 1);
         } else {
             t = (t >> (27 - 4)) & 0x0f;
-            debug = BEATS[t];
 
             // float duration64th = bdur / 16.0f / 1000.0f;
             // float duration = duration64th * BEATS[t];
