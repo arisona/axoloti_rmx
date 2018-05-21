@@ -1,0 +1,18 @@
+<objdefs appVersion="1.0.12">
+   <obj.normal id="inv_u" uuid="7934524f-637b-4113-bc0f-13078a06319b">
+      <sDescription>invert unsigned (y = 1 - x)</sDescription>
+      <author>robot_mixeur</author>
+      <license>GPL</license>
+      <helpPatch></helpPatch>
+      <inlets>
+         <frac32 name="in" description="in"/>
+      </inlets>
+      <outlets>
+         <frac32 name="out" description="out"/>
+      </outlets>
+      <displays/>
+      <params/>
+      <attribs/>
+      <code.krate><![CDATA[outlet_out = (1 << 27) - 1 - inlet_in;]]></code.krate>
+   </obj.normal>
+</objdefs>

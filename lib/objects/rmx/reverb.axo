@@ -11,7 +11,9 @@ http://mutable-instruments.com</sDescription>
          <frac32 name="amount" description="Reverb amount"/>
          <frac32 name="time" description="Time"/>
          <frac32 name="diffusion" description="Diffusion"/>
-         <frac32 name="lowpass" description="Low-pass"/>
+         <frac32 name="cutoff" description="Low-pass cutoff"/>
+         <frac32 name="modEnv" description="Envelope modulation amount"/>
+         <frac32 name="env" description="Envelope"/>
       </inlets>
       <outlets>
          <frac32buffer name="l"/>
@@ -21,32 +23,10 @@ http://mutable-instruments.com</sDescription>
       <params/>
       <attribs/>
       <includes>
-         <include>./code/rmx_axo_base.hpp</include>
+         <include>./code/rmx_axo_reverb.hpp</include>
       </includes>
-      <code.declaration><![CDATA[elements::Reverb reverb;]]></code.declaration>
-      <code.init><![CDATA[uint16_t* buf = (uint16_t*) sdram_malloc(32768);
-if (!buf) return;
-
-reverb.Init(buf);]]></code.init>
-      <code.krate><![CDATA[static float left[BUFSIZE];
-static float right[BUFSIZE];
-
-reverb.set_amount(rmx::clamp(q27_to_float(inlet_amount), 0.0f, 1.0f) * 0.5f);
-reverb.set_input_gain(1.0f);
-reverb.set_time(rmx::clamp(q27_to_float(inlet_time), 0.0f, 1.0f) * 0.8f + 0.1f);
-reverb.set_diffusion(rmx::clamp(q27_to_float(inlet_diffusion), 0.0f, 1.0f) * 0.5f + 0.5f);
-reverb.set_lp(1.0f - rmx::clamp(q27_to_float(inlet_lowpass), 0.0f, 1.0f));
-
-for (int i = 0; i < BUFSIZE; ++i) {
-	left[i] = q27_to_float(inlet_l[i]);
-	right[i] = q27_to_float(inlet_r[i]);
-}
-
-reverb.Process(left, right, BUFSIZE);
-
-for (int i = 0; i < BUFSIZE; ++i){
-	outlet_l[i] = float_to_q27(left[i]);
-	outlet_r[i] = float_to_q27(right[i]);
-}]]></code.krate>
+      <code.declaration><![CDATA[rmx::Reverb reverb;]]></code.declaration>
+      <code.krate><![CDATA[reverb.process(inlet_l, inlet_r, outlet_l, outlet_r,
+			inlet_amount, inlet_time, rmx::ONE, inlet_diffusion, inlet_cutoff, inlet_modEnv, inlet_env);]]></code.krate>
    </obj.normal>
 </objdefs>

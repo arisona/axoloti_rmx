@@ -2,7 +2,9 @@
    <obj.normal id="env_follower" uuid="f83be1e0-df96-4180-a110-edda7ef47383">
       <sDescription>Stereo envelope follower with attach and release time.
 
-Times are mapped expontentially from 0 to ~8s, with a value of 32 corresponding to ~100ms.</sDescription>
+Times are mapped expontentially from 0 to ~8s, with a value of 32 corresponding to ~100ms.
+
+Divisor attribute allows dividing the attack / release inletes by powers of 2 (for shorter times).</sDescription>
       <author>robot_mixeur</author>
       <license>GPL</license>
       <inlets>
@@ -16,11 +18,13 @@ Times are mapped expontentially from 0 to ~8s, with a value of 32 corresponding 
       </outlets>
       <displays/>
       <params/>
-      <attribs/>
+      <attribs>
+         <spinner name="divisor" MinValue="0" MaxValue="4" DefaultValue="0"/>
+      </attribs>
       <includes>
          <include>./code/rmx_axo_envelope.hpp</include>
       </includes>
       <code.declaration><![CDATA[rmx::EnvelopeFollower follower;]]></code.declaration>
-      <code.krate><![CDATA[outlet_env = follower.process(inlet_attack, inlet_release, inlet_l, inlet_r);]]></code.krate>
+      <code.krate><![CDATA[outlet_env = follower.process(inlet_attack >> attr_divisor, inlet_release >> attr_divisor, inlet_l, inlet_r);]]></code.krate>
    </obj.normal>
 </objdefs>
