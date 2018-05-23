@@ -26,6 +26,9 @@ http://mutable-instruments.com</sDescription>
          <include>./code/rmx_axo_reverb.hpp</include>
       </includes>
       <code.declaration><![CDATA[rmx::Reverb reverb;]]></code.declaration>
+      <code.init><![CDATA[static uint16_t buffer[16384] __attribute__ ((section (".sdram")));
+
+reverb.setup(buffer);]]></code.init>
       <code.krate><![CDATA[reverb.process(inlet_l, inlet_r, outlet_l, outlet_r,
 			inlet_amount, inlet_time, rmx::ONE, inlet_diffusion, inlet_cutoff, inlet_modEnv, inlet_env);]]></code.krate>
    </obj.normal>

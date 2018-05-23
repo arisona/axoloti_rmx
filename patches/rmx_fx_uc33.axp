@@ -57,12 +57,12 @@
    <obj type="audio/inconfig" uuid="9a80ef3c19f2a8f81da3a3b7c1c44d18126b97d9" name="input config" x="14" y="140">
       <params/>
       <attribs>
-         <combo attributeName="gain" selection="0dB"/>
+         <combo attributeName="gain" selection="6dB"/>
          <combo attributeName="boost" selection="0dB"/>
          <combo attributeName="mode" selection="Stereo"/>
       </attribs>
    </obj>
-   <obj type="disp/kscope 128 p" uuid="664f9317a38a6910ae9bc020e00ca2dd2ee692fa" name="kscope_1" x="126" y="140">
+   <obj type="disp/kscope 128 p" uuid="664f9317a38a6910ae9bc020e00ca2dd2ee692fa" name="kscope_1" x="252" y="140">
       <params/>
       <attribs/>
    </obj>
@@ -111,13 +111,13 @@
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d hp drive" x="462" y="392">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d hp mod" x="462" y="392">
       <params>
          <frac32.u.map name="value" MidiCC="57" value="0.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d lp drive" x="574" y="392">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d lp mod" x="574" y="392">
       <params>
          <frac32.u.map name="value" MidiCC="58" value="0.0"/>
       </params>
@@ -137,7 +137,7 @@
    </obj>
    <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="env attack" x="14" y="490">
       <params>
-         <frac32.u.map name="value" MidiCC="39" value="0.0"/>
+         <frac32.u.map name="value" MidiCC="39" value="10.0"/>
       </params>
       <attribs/>
    </obj>
@@ -159,13 +159,13 @@
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d hp mod" x="462" y="490">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d hp drive" x="462" y="490">
       <params>
          <frac32.u.map name="value" MidiCC="43" value="0.0"/>
       </params>
       <attribs/>
    </obj>
-   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d lp mod" x="574" y="490">
+   <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="d lp drive" x="574" y="490">
       <params>
          <frac32.u.map name="value" MidiCC="44" value="0.0"/>
       </params>
@@ -283,7 +283,7 @@
    </obj>
    <obj type="ctrl/dial p" uuid="cc5d2846c3d50e425f450c4b9851371b54f4d674" name="wet mix" x="798" y="686">
       <params>
-         <frac32.u.map name="value" MidiCC="16" value="63.99999952316284"/>
+         <frac32.u.map name="value" MidiCC="16" value="64.0"/>
       </params>
       <attribs/>
    </obj>
@@ -297,16 +297,16 @@
       <net>
          <source obj="input" outlet="right"/>
          <dest obj="vu right" inlet="1"/>
+         <dest obj="env_follower_1" inlet="r"/>
          <dest obj="gate_dry" inlet="r"/>
          <dest obj="gate_wet" inlet="r"/>
-         <dest obj="env_follower_1" inlet="r"/>
       </net>
       <net>
          <source obj="input" outlet="left"/>
          <dest obj="vu left" inlet="1"/>
+         <dest obj="env_follower_1" inlet="l"/>
          <dest obj="gate_dry" inlet="l"/>
          <dest obj="gate_wet" inlet="l"/>
-         <dest obj="env_follower_1" inlet="l"/>
       </net>
       <net>
          <source obj="dry mix" outlet="out"/>
@@ -402,10 +402,10 @@
          <source obj="env_follower_1" outlet="env"/>
          <dest obj="kscope_1" inlet="in"/>
          <dest obj="duck_1" inlet="env"/>
-         <dest obj="gate_dry" inlet="env"/>
-         <dest obj="gate_wet" inlet="env"/>
          <dest obj="space_delay_1" inlet="env"/>
          <dest obj="reverb_1" inlet="env"/>
+         <dest obj="gate_dry" inlet="env"/>
+         <dest obj="gate_wet" inlet="env"/>
       </net>
       <net>
          <source obj="env attack" outlet="out"/>
@@ -477,8 +477,8 @@
       </net>
       <net>
          <source obj="lfo rate" outlet="out"/>
-         <dest obj="space_delay_1" inlet="modRate"/>
          <dest obj="auto_pan_1" inlet="rate"/>
+         <dest obj="space_delay_1" inlet="modRate"/>
       </net>
       <net>
          <source obj="dry gate" outlet="out"/>

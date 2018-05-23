@@ -17,7 +17,9 @@ namespace rmx {
 class Reverb final {
 public:
     Reverb()  {
-        uint16_t* buf = (uint16_t*) sdram_malloc(32768);
+    }
+
+    void setup(uint16_t* buf) {
         reverb.Init(buf);
     }
 
@@ -29,7 +31,7 @@ public:
         static float left[BUFSIZE];
         static float right[BUFSIZE];
 
-        int a = (amount == 0) ? 0 : (amount + (___SMMUL(env << 3, modEnv << 2) << 2));
+        int a = lp.process((amount == 0) ? 0 : (amount + (___SMMUL(env << 3, modEnv << 2) << 2)));
 
         reverb.set_amount(rmx::clamp(q27_to_float(a), 0.0f, 1.0f) * 0.5f);
         reverb.set_input_gain(rmx::clamp(q27_to_float(gain), 0.0f, 1.0f));
@@ -52,6 +54,8 @@ public:
 
 private:
     elements::Reverb reverb;
+
+    LP lp { ONE >> 1 };
 };
 
 } // namespace rmx

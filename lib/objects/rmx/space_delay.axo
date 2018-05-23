@@ -39,8 +39,8 @@
          <include>./code/rmx_axo_delay.hpp</include>
       </includes>
       <code.declaration><![CDATA[rmx::FadeDelay delay { attr_length, attr_fadetime };]]></code.declaration>
-      <code.init><![CDATA[static int32_t _arrayL[attr_length] __attribute__ ((section (".sdram")));
-static int32_t _arrayR[attr_length] __attribute__ ((section (".sdram")));
+      <code.init><![CDATA[static int _arrayL[attr_length] __attribute__ ((section (".sdram")));
+static int _arrayR[attr_length] __attribute__ ((section (".sdram")));
 
 delay.setup(&_arrayL[0], &_arrayR[0]);]]></code.init>
       <code.krate><![CDATA[delay.process(inlet_l, inlet_r, outlet_l, outlet_r,

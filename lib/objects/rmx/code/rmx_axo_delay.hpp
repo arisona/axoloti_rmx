@@ -23,7 +23,7 @@ public:
     // temporary use for passing debug values to the gui
     int debug = 0;
 
-    void setup(int32_t* bufferL, int32_t* bufferR) {
+    void setup(int* bufferL, int* bufferR) {
         this->bufferL = bufferL;
         this->bufferR = bufferR;
 
@@ -196,8 +196,8 @@ private:
     }
 
 
-    int32_t* bufferL = nullptr;
-    int32_t* bufferR = nullptr;
+    int* bufferL = nullptr;
+    int* bufferR = nullptr;
 
     int length = 0;
 
