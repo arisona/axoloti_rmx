@@ -10,13 +10,15 @@
       <displays>
          <int32.label name="bpm" noLabel="true"/>
       </displays>
-      <params/>
+      <params>
+         <bool32.tgl name="enable" description="Enable midi sync output" noLabel="true"/>
+      </params>
       <attribs/>
       <includes>
          <include>./code/rmx_axo_midi.hpp</include>
       </includes>
       <code.declaration><![CDATA[rmx::MidiClock clock;]]></code.declaration>
-      <code.krate><![CDATA[int bdur = clock.process();
+      <code.krate><![CDATA[int bdur = param_enable ? clock.process() : 0;
 outlet_bdur = bdur;
 if (bdur > 0)
 	disp_bpm = (int)(60.0f * 1000.0f / bdur);
